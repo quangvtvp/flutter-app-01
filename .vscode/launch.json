@@ -10,12 +10,20 @@
             "name": "Flutter Web",
             "request": "launch",
             "type": "dart",
+            "deviceId": "chrome",
             "program": "lib/main.dart",
             "args": [
                 "--web-port",
                 "8080"
             ],
            
+        },
+        {
+          "name": "Flutter mobile",
+          "request": "launch",
+          "type": "dart",
+          "program": "lib/main.dart",
+    
         }
         
     ]
