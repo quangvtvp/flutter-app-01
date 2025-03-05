@@ -4,6 +4,7 @@ import 'package:flutter_application/screens/welcome.dart';
 void main() {
   // runApp(const MyApp());
   runApp(const WelcomeScreen());
+  // this is a comment quanglm1 branch
 }
 
 class MyApp extends StatelessWidget {
