@@ -42,6 +42,7 @@ class BT_HS_State extends State<a> {
   String name = "";
   String date = "";
   late int a; //khởi tạo a nhưng chưa gán giá trị, 1 lúc nào đó sẽ làm
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +78,7 @@ class BT_HS_State extends State<a> {
         Text('$date', style: TextStyle(fontSize: 65, color: Colors.red)),
         IconButton(
             onPressed: () {
-              ngau_nhien();
+              ngau_nhien(); //khi bấm, sẽ chạy func ngau_nhien(), dẫn đến state mới
             },
             icon: Icon(Icons.shuffle, size: 50)),
       ],
