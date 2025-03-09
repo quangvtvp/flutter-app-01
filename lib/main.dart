@@ -1,79 +1,145 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/screens/row_column.dart';
-import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
-  // runApp(const MyApp());
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    home: RowAndColumn(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
-      home: RowAndColumn(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      print('dong 1');
-      print('dong 2');
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('initState');
-  }
+class RowAndColumn extends StatelessWidget {
+  const RowAndColumn({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print('build _MyHomePageState');
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Row and Column'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: [
+          _buildRow1(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow2(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow3(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow4(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow5(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow6(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow7(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+          _buildRow8(),
+          const Divider(color: Colors.black, height: 1, thickness: 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRow1() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          color: Colors.blue,
+          width: 100,
+          height: 75,
+          child: Center(
+            child: Text(
+              'hello',
+              style: TextStyle(color: Colors.red, fontSize: 20),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ],
+    );
+  }
+
+  Row _buildRow2() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Container(color: Colors.red, height: 75),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(color: Colors.blue, height: 75),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRow3() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 15,
+          child: Container(
+              color: const Color.fromARGB(255, 98, 140, 98),
+              width: 100,
+              height: 75),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(color: Colors.grey, width: 100, height: 75),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRow4() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          color: const Color.fromARGB(255, 63, 170, 227),
+          width: 20,
+          height: 75,
+        ),
+      ],
+    );
+  }
+
+  Row _buildRow5() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(color: Colors.red, width: 20, height: 75),
+        Container(color: Colors.blue, width: 20, height: 75),
+      ],
+    );
+  }
+
+  Row _buildRow6() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(color: Colors.red, width: 20, height: 75),
+        Spacer(
+          flex: 20,
+        ),
+        Container(color: Colors.blue, width: 20, height: 75),
+      ],
+    );
+  }
+
+  Row _buildRow7() {
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Container(color: Colors.white, height: 70),
+    ]);
+  }
+
+  Row _buildRow8() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(color: Colors.red, width: 20, height: 100),
+        Container(color: Colors.blue, width: 20, height: 100),
+      ],
     );
   }
 }
