@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class widget_FlashCard extends StatelessWidget {
   const widget_FlashCard({super.key});
@@ -23,19 +24,45 @@ class Vocabulary {
   Vocabulary(this.englishWord, this.vietnameseMeaning);
 }
 
-Vocabulary Test = Vocabulary('Test', 'kiem tra');
+List<Vocabulary> vocab_data = [
+  Vocabulary("apple", "qua tao"),
+  Vocabulary("banana", "qua chuoi"),
+  Vocabulary("cat", "con meo"),
+  Vocabulary("dog", "con cho"),
+  Vocabulary("elephant", "con voi"),
+  Vocabulary("flower", "bong hoa"),
+  Vocabulary("guitar", "dan guitar"),
+  Vocabulary("house", "ngoi nha"),
+  Vocabulary("ice", "nuoc da"),
+  Vocabulary("jungle", "rung"),
+];
+Vocabulary vocab = vocab_data[0];
+String text = '';
+Random random = Random();
+List<Widget> widget_data = [];
+int a = 0;
 
 class _widget_FlashCard_State extends State<A> {
   @override
   void initState() {
     super.initState();
     _changeText;
+    _changeVocab;
   }
 
-  String text = Test.englishWord;
+  void _changeVocab() {
+    int previous_a = a;
+    while (a == previous_a) {
+      a = random.nextInt(vocab_data.length);
+    }
+    ;
+    vocab = vocab_data[a];
+  }
+
   void _changeText() {
-    text =
-        (text == Test.englishWord) ? Test.vietnameseMeaning : Test.englishWord;
+    text = (text == vocab.englishWord)
+        ? vocab.vietnameseMeaning
+        : vocab.englishWord;
 
     setState(() {
       text = text;
@@ -47,10 +74,10 @@ class _widget_FlashCard_State extends State<A> {
     return MaterialApp(
         home: Scaffold(
             body: Column(children: [
-      InkWell(
-          onTap: _changeText,
-          child: Align(
-            alignment: Alignment.topCenter,
+      Align(
+          alignment: Alignment.topCenter,
+          child: InkWell(
+            onTap: _changeText,
             child: Container(
               color: Colors.blue[100],
               margin: const EdgeInsets.all(20),
@@ -64,7 +91,7 @@ class _widget_FlashCard_State extends State<A> {
                   Text(
                     '$text',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 80),
+                    style: TextStyle(fontSize: 50),
                   ),
                 ],
               ),
@@ -75,7 +102,10 @@ class _widget_FlashCard_State extends State<A> {
           child: IconButton(
               onPressed: () {},
               icon: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _changeVocab();
+                  _changeText();
+                },
                 child: Text(
                   'Change card',
                   style: TextStyle(fontSize: 50),
