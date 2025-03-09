@@ -37,9 +37,9 @@ List<Vocabulary> vocab_data = [
   Vocabulary("jungle", "rung"),
 ];
 Vocabulary vocab = vocab_data[0];
-String text = '';
+String text = vocab_data[0].englishWord;
 Random random = Random();
-List<Widget> widget_data = [];
+List<Widget> widget_data = []; // quản lí widget
 int a = 0;
 
 class _widget_FlashCard_State extends State<A> {
@@ -87,7 +87,7 @@ class _widget_FlashCard_State extends State<A> {
                 mainAxisAlignment:
                     MainAxisAlignment.center, // Căn giữa theo chiều dọc
                 children: [
-                  Icon(Icons.image, size: 100, color: Colors.black), // Icon
+                  Icon(Icons.image, size: 100, color: Colors.black),
                   Text(
                     '$text',
                     textAlign: TextAlign.center,
