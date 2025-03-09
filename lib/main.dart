@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/row_column.dart';
 import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const WelcomeScreen());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,14 +13,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('build');
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'My screen second'),
+      home: RowAndColumn(),
     );
   }
 }
@@ -49,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     print('initState');
-    
   }
 
   @override
