@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: true,
+      home: RowAndColumn(),
+    );
+  }
+}
+
 class RowAndColumn extends StatelessWidget {
   const RowAndColumn({super.key});
 
@@ -9,99 +23,119 @@ class RowAndColumn extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Row and Column'),
       ),
-      body: Column(
-        children: [
-          _buildRow1(),
-          const Divider(
-            color: Colors.black,
-            height: 1,
-            thickness: 1,
-          ),
-          _buildRow2(),
-          const Divider(
-            color: Colors.black,
-            height: 1,
-            thickness: 1,
-          ),
-          _buildRow3(),
-          const Divider(
-            color: Colors.black,
-            height: 1,
-            thickness: 1,
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildRow1(),
+            const Divider(color: Colors.black, height: 1, thickness: 1),
+            _buildRow2(),
+            const Divider(color: Colors.black, height: 1, thickness: 1),
+            _buildRow3(),
+            const Divider(color: Colors.black, height: 1, thickness: 1),
+            _buildRow4(),
+            const Divider(color: Colors.black, height: 1, thickness: 1),
+            _buildRow5(),
+            const Divider(color: Colors.black, height: 1, thickness: 1),
+            _buildRow6(),
+          ],
+        ),
       ),
     );
   }
 
-  Row _buildRow3() {
+  Widget _buildRow1() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        const SizedBox(
-          height: 200,
-        ),
-        Container(
-          color: Colors.red,
-          width: 100,
-          height: 100,
-        ),
-        Container(
-          color: Colors.green,
-          width: 100,
-          height: 100,
-        ),
-      ],
-    );
-  }
-
-  Row _buildRow2() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          color: Colors.red,
-          width: 100,
-          height: 100,
-        ),
-        Container(
-          color: Colors.green,
-          width: 100,
-          height: 100,
-        ),
-        const Expanded(
-          child: SizedBox(),
-        ),
-        Container(
-          color: Colors.deepPurple,
-          width: 100,
-          height: 100,
-        ),
-      ],
-    );
-  }
-
-  Row _buildRow1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          flex: 1,
-          child: Container(
+            child: Container(
+                color: Colors.brown,
+                height: 50,
+                child: const Center(child: Text('HelloWorld')))),
+      ],
+    );
+  }
+
+  Widget _buildRow2() {
+    return Row(
+      children: [
+        Expanded(
+            child: Container(
+                color: Colors.red,
+                height: 50,
+                child: const Center(child: Text('Hello')))),
+        Expanded(
+            child: Container(
+                color: Colors.blue,
+                height: 50,
+                child: const Center(child: Text('World')))),
+      ],
+    );
+  }
+
+  Widget _buildRow3() {
+    return Row(
+      children: [
+        Expanded(
+            flex: 2,
+            child: Container(
+                color: Colors.green,
+                height: 50,
+                child: const Center(child: Text('Hello')))),
+        Expanded(
+            child: Container(
+                color: Colors.grey,
+                height: 50,
+                child: const Center(child: Text('World')))),
+      ],
+    );
+  }
+
+  Widget _buildRow4() {
+    return Row(
+      children: [
+        Expanded(child: Container(height: 50)),
+        Expanded(
+            child: Container(
+                color: Colors.red,
+                height: 50,
+                child: const Center(child: Text('Hello')))),
+        Expanded(child: Container(height: 50)),
+        Expanded(
+            child: Container(
+                color: Colors.blue,
+                height: 50,
+                child: const Center(child: Text('World')))),
+      ],
+    );
+  }
+
+  Widget _buildRow5() {
+    return Row(
+      children: [
+        Container(
+            width: 50,
+            height: 50,
             color: Colors.red,
-            width: 100,
-            height: 100,
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Container(
-            color: Colors.green,
-            width: 100,
-            height: 100,
-          ),
-        ),
+            child: const Center(child: Text('Hello'))),
+        Expanded(child: Container(height: 50)),
+        Container(
+            width: 50,
+            height: 50,
+            color: Colors.blue,
+            child: const Center(child: Text('World'))),
+      ],
+    );
+  }
+
+  Widget _buildRow6() {
+    return Row(
+      children: [
+        Container(
+            width: 50,
+            height: 50,
+            color: Colors.red,
+            child: const Center(child: Text('HelloWorld'))),
+        Expanded(child: Container(height: 50)),
       ],
     );
   }
