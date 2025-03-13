@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/BTVN/ListView.dart';
 import 'package:flutter_application/BTVN/WeatherCard.dart';
+import 'package:flutter_application/BTVN/MarketCard.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const WeatherCard());
+  runApp(const MarketCard());
 }
 
 class MyApp extends StatelessWidget {
