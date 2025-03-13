@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
 
-double pt_B2(int x) {
-  return (-7 * (x * x - 10 * x) + 100).toDouble();
-}
+class Vocabulary {
+  String englishWord = '';
+  String vietnameseMeaning = '';
 
-List<Widget> a = List.generate(
-  11,
-  (index) => Align(
-    alignment: Alignment.center,
-    child: Container(
-      alignment: Alignment.center,
-      color: Colors.red,
-      width: pt_B2(index),
-      height: pt_B2(index),
-      child: Text(
-        '$index',
-        style: TextStyle(fontSize: 30 * (pt_B2(index) / 100)),
-      ),
-    ),
-  ),
-  //SizedBox(width: 200 * (pt_B2(index) / 100)),
-);
+  Vocabulary(this.englishWord, this.vietnameseMeaning);
+}
 
 class ListWidget extends StatelessWidget {
   const ListWidget({super.key});
@@ -28,16 +13,107 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Center(
-            child: Scaffold(
-      backgroundColor: Colors.black, //hey look what i found !
-      body: PageView(
-        controller: PageController(
-            viewportFraction: 0.5), //(mỗi widget con chỉ chiểm 0.1/1 màn hình)
-        children: [for (int i = 0; i < 11; i++) a[i]],
-      ),
-    )));
+        home: Scaffold(backgroundColor: Colors.black, body: MyListView()));
   }
 }
-//ListView và row khá giống nhau, nhưng ListView ko bị tràn màn hình
-//PageView tạo hiệu ứng trượt, gần giống. PageView mặc định là row => scrollDirection: Axis.horizontal NO NEED
+// màu nền mặc định của card là trắng, sẽ đè lên mọi câu lệnh
+
+class MyListView extends StatefulWidget {
+  const MyListView({super.key});
+
+  @override
+  State<MyListView> createState() => _ListViewState();
+}
+
+class _ListViewState extends State<MyListView> {
+  List<Vocabulary> vocab_data = [
+    Vocabulary("apple", "qua tao"),
+    Vocabulary("banana", "qua chuoi"),
+    Vocabulary("cat", "con meo"),
+    Vocabulary("dog", "con cho"),
+    Vocabulary("elephant", "con voi"),
+    Vocabulary("flower", "bong hoa"),
+    Vocabulary("guitar", "dan guitar"),
+    Vocabulary("house", "ngoi nha"),
+    Vocabulary("ice", "nuoc da"),
+    Vocabulary("jungle", "rung"),
+  ];
+  final PageController _pageController =
+      PageController(viewportFraction: 0.4); // i dunno, what it this job ?
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+        controller: _pageController, //kiểm soát widget dc hiển thị
+        itemCount: 10, // số lượng widget con
+
+        onPageChanged: (index) {
+          setState(() {
+            _currentPage = index;
+          });
+        },
+        itemBuilder: (context, index) {
+          double scale = (_currentPage == index)
+              ? 1.0
+              : 0.5; //ko phải widget đang chiếu => thu nhỏ lại 1 nửa
+          return Transform.scale(
+              scale: scale,
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: CoupleCard(index, _currentPage, vocab_data)));
+        });
+  }
+}
+
+Widget CoupleCard(int index, int _currentPage, List vocab_data) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        width: _currentPage == index ? 300 : 0100,
+        height: _currentPage == index ? 300 : 100,
+        decoration: BoxDecoration(
+          color: _currentPage == index ? Colors.blue : Colors.red,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Align(
+          child: Text(
+            '${vocab_data[index].englishWord}',
+            style: TextStyle(fontSize: 50),
+          ),
+        ),
+      ),
+      AnimatedContainer(
+        //container nhưng có hiệu ứng xuất hiện
+        duration: Duration(milliseconds: 400), //thời gian chạy hiệu ứng
+        width: _currentPage == index ? 300 : 100,
+        height: _currentPage == index ? 300 : 100,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: _currentPage == index ? Colors.blue : Colors.red,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: AnimatedDefaultTextStyle(
+          //Text cũng animation luôn cho đồng bộ với container
+          //Update: it's not work as i thought
+          duration: const Duration(milliseconds: 400),
+          style: TextStyle(
+            fontSize: _currentPage == index ? 50 : 40,
+            color: Colors.white,
+          ),
+          child: Text(
+            '${vocab_data[index].vietnameseMeaning}',
+          ),
+        ),
+      ),
+    ],
+  );
+}
+// nếu muốn chỉnh cả 2 thuộc tính color và borderRadius trong container, phải bọc trong Decoration
