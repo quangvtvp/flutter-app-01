@@ -39,9 +39,9 @@ class _ListViewState extends State<MyListView> {
     Vocabulary("jungle", "rung"),
   ];
   final PageController _pageController =
-      PageController(viewportFraction: 0.4); // i dunno, what it this job ?
+      PageController(viewportFraction: 0.2); // i dunno, what it this job ?
   int _currentPage = 0;
-
+  int itemcount = 10;
   @override
   void initState() {
     super.initState();
@@ -49,35 +49,51 @@ class _ListViewState extends State<MyListView> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-        controller: _pageController, //kiểm soát widget dc hiển thị
-        itemCount: 10, // số lượng widget con
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly //another useless line
+        ,
+        children: [
+          Expanded(
+              // Chúa biết tại sao phải bọc trong expanded
+              // ko bọc thì đen thui ???
+              flex: 30,
+              child: PageView.builder(
+                  controller: _pageController, //kiểm soát widget dc hiển thị
+                  itemCount: itemcount, // số lượng widget con
 
-        onPageChanged: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
-        itemBuilder: (context, index) {
-          double scale = (_currentPage == index)
-              ? 1.0
-              : 0.5; //ko phải widget đang chiếu => thu nhỏ lại 1 nửa
-          return Transform.scale(
-              scale: scale,
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: CoupleCard(index, _currentPage, vocab_data)));
-        });
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    double scale = (_currentPage == index)
+                        ? 1.0
+                        : 0.5; //ko phải widget đang chiếu => thu nhỏ lại 1 nửa
+                    return Transform.scale(
+                        scale: scale,
+                        child: Align(
+                            child:
+                                EnglishCard(index, _currentPage, vocab_data)));
+                  })),
+          Expanded(flex: 20, child: MeaningCard(_currentPage, vocab_data)),
+          Expanded(
+            flex: 1,
+            child: PageProgress(_currentPage, itemcount),
+          )
+        ]);
   }
 }
 
-Widget CoupleCard(int index, int _currentPage, List vocab_data) {
+Widget EnglishCard(int index, int _currentPage, List vocab_data) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        width: _currentPage == index ? 300 : 0100,
+        //container nhưng có hiệu ứng xuất hiện
+        duration: Duration(milliseconds: 200),
+        //thời gian chạy hiệu ứng
+        width: _currentPage == index ? 300 : 100,
         height: _currentPage == index ? 300 : 100,
         decoration: BoxDecoration(
           color: _currentPage == index ? Colors.blue : Colors.red,
@@ -90,30 +106,74 @@ Widget CoupleCard(int index, int _currentPage, List vocab_data) {
           ),
         ),
       ),
-      AnimatedContainer(
-        //container nhưng có hiệu ứng xuất hiện
-        duration: Duration(milliseconds: 400), //thời gian chạy hiệu ứng
-        width: _currentPage == index ? 300 : 100,
-        height: _currentPage == index ? 300 : 100,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: _currentPage == index ? Colors.blue : Colors.red,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: AnimatedDefaultTextStyle(
-          //Text cũng animation luôn cho đồng bộ với container
-          //Update: it's not work as i thought
-          duration: const Duration(milliseconds: 400),
-          style: TextStyle(
-            fontSize: _currentPage == index ? 50 : 40,
-            color: Colors.white,
-          ),
-          child: Text(
-            '${vocab_data[index].vietnameseMeaning}',
-          ),
-        ),
-      ),
     ],
   );
 }
 // nếu muốn chỉnh cả 2 thuộc tính color và borderRadius trong container, phải bọc trong Decoration
+
+Widget MeaningCard(int _currentPage, List vocab_data) {
+  return Container(
+    width: 500,
+    height: 40,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      //color: Colors.blue,
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(10 * _currentPage.toDouble()),
+    ),
+    child: Text(
+      '${vocab_data[_currentPage].vietnameseMeaning}',
+      style: TextStyle(fontSize: 100),
+    ),
+  );
+}
+
+// Container PageProgress(int _currentPage, int itemcount) {
+//   return Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(100),
+//       ),
+//       child: Row(
+//         children: [
+//           Expanded(
+//               child: Container(
+//             color: Colors.purple,
+//             width: 100,
+//           )),
+//         ],
+//       ));
+// }
+
+Container PageProgress(int _currentPage, int itemcount) {
+  double progress =
+      (_currentPage + _currentPage * (1 / (itemcount - 1))) / itemcount;
+
+  return Container(
+    decoration: BoxDecoration(
+      //color: Colors.white,
+      borderRadius: BorderRadius.circular(1000),
+    ),
+    child: Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
+        FractionallySizedBox(
+          alignment: Alignment.centerLeft,
+          widthFactor: progress,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.purple,
+              borderRadius: BorderRadius.circular(100),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+//i have no idea how doest it works, but it works !
