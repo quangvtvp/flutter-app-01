@@ -46,10 +46,10 @@ class RowAndColumn extends StatelessWidget {
           color: Colors.blue,
           width: 100,
           height: 75,
-          child: Center(
+          child: const Center(
             child: Text(
-              'hello',
-              style: TextStyle(color: Colors.red, fontSize: 100),
+              'Hello',
+              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
         ),
@@ -62,11 +62,29 @@ class RowAndColumn extends StatelessWidget {
       children: [
         Expanded(
           flex: 1,
-          child: Container(color: Colors.red, height: 75),
+          child: Container(
+            color: Colors.red,
+            height: 75,
+            child: const Center(
+              child: Text(
+                'hello',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ),
         Expanded(
           flex: 1,
-          child: Container(color: Colors.blue, height: 75),
+          child: Container(
+            color: Colors.blue,
+            height: 75,
+            child: const Center(
+              child: Text(
+                'word',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -79,13 +97,30 @@ class RowAndColumn extends StatelessWidget {
         Expanded(
           flex: 15,
           child: Container(
-              color: const Color.fromARGB(255, 98, 140, 98),
-              width: 100,
-              height: 75),
+            color: const Color.fromARGB(255, 98, 140, 98),
+            width: 100,
+            height: 75,
+            child: const Center(
+              child: Text(
+                'hello',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ),
         Expanded(
           flex: 1,
-          child: Container(color: Colors.grey, width: 100, height: 75),
+          child: Container(
+            color: Colors.grey,
+            width: 100,
+            height: 75,
+            child: const Center(
+              child: Text(
+                'word',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -97,8 +132,14 @@ class RowAndColumn extends StatelessWidget {
       children: [
         Container(
           color: const Color.fromARGB(255, 63, 170, 227),
-          width: 20,
+          width: 40,
           height: 75,
+          child: const Center(
+            child: Text(
+              'hello',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
       ],
     );
@@ -108,8 +149,28 @@ class RowAndColumn extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Container(color: Colors.red, width: 20, height: 75),
-        Container(color: Colors.blue, width: 20, height: 75),
+        Container(
+          color: Colors.red,
+          width: 40,
+          height: 75,
+          child: const Center(
+            child: Text(
+              'hello',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Container(
+          color: Colors.blue,
+          width: 40,
+          height: 75,
+          child: const Center(
+            child: Text(
+              'word',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -118,27 +179,70 @@ class RowAndColumn extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(color: Colors.red, width: 20, height: 75),
-        Spacer(
-          flex: 20,
+        Container(
+          color: Colors.red,
+          width: 50,
+          height: 75,
+          child: const Center(
+            child: Text(
+              'TUYEN',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
-        Container(color: Colors.blue, width: 20, height: 75),
+        const Spacer(flex: 20),
+        Container(
+          color: Colors.blue,
+          width: 50,
+          height: 75,
+          child: const Center(
+            child: Text(
+              'Tuyen',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Row _buildRow7() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-      Container(color: Colors.white, height: 70),
-    ]);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          height: 70,
+        ),
+      ],
+    );
   }
 
   Row _buildRow8() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(color: Colors.red, width: 20, height: 100),
-        Container(color: Colors.blue, width: 20, height: 100),
+        Container(
+          color: Colors.red,
+          width: 40,
+          height: 100,
+          child: const Center(
+            child: Text(
+              'hello',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Container(
+          color: Colors.blue,
+          width: 40,
+          height: 100,
+          child: const Center(
+            child: Text(
+              'word',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ],
     );
   }
