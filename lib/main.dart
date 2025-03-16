@@ -61,7 +61,7 @@ class StockCard extends StatelessWidget {
           const SizedBox(height: 25),
           Text("\$$price",
               style:
-                  const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                  const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
 
           const SizedBox(height: 10),
      Text(
