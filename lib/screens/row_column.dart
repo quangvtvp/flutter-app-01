@@ -36,21 +36,31 @@ class RowAndColumn extends StatelessWidget {
 
   Row _buildRow3() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const SizedBox(
-          height: 200,
-        ),
         Container(
           color: Colors.red,
           width: 100,
           height: 100,
         ),
-        Container(
-          color: Colors.green,
-          width: 100,
-          height: 100,
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Column(children: [
+                Text("data"),
+                Text("data"),
+                Text("data"),
+              ]),
+            ),
+          ),
         ),
       ],
     );
