@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CardDetail extends StatelessWidget {
+class CardDetail extends StatefulWidget {
   const CardDetail({super.key});
+
+  @override
+  State<CardDetail> createState() => _CardDetailState();
+}
+
+class _CardDetailState extends State<CardDetail> {
+  bool isShowing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +35,31 @@ class CardDetail extends StatelessWidget {
                     minWidth: 50,
                     minHeight: 50,
                   ),
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.arrow_drop_down_circle_outlined,
-                    size: 50,
-                  ),
+                  onPressed: () {
+                    setState(() {
+                      isShowing = !isShowing;
+                    });
+                  },
+                  icon: isShowing
+                      ? const Icon(Icons.arrow_drop_up)
+                      : const Icon(
+                          Icons.arrow_drop_down_circle_outlined,
+                          size: 50,
+                        ),
                   splashRadius: 50,
                   iconSize: 50,
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 20,
+            Visibility(
+              visible: isShowing,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 20,
+                ),
+                child: _buildTranslatedFlip(),
               ),
-              child: _buildTranslatedFlip(),
             ),
           ],
         ),

@@ -3,20 +3,23 @@ import 'package:flutter_application/exercise/adding%20state/cards.dart';
 import 'package:flutter_application/exercise/adding%20state/next_color.dart';
 import 'package:flutter_application/exercise/adding%20state/quiz.dart';
 import 'package:flutter_application/exercise/adding%20state/quiz_with_data.dart';
+import 'package:flutter_application/exercise/cards.dart';
 import 'package:flutter_application/exercise/grid_stock.dart';
 import 'package:flutter_application/exercise/stock.dart';
 import 'package:flutter_application/exercise/weather.dart';
+import 'package:flutter_application/live/list_grid.dart';
+import 'package:flutter_application/live/simple_state.dart';
 import 'package:flutter_application/model/vocabulary.dart';
 
 void main() {
   // runApp(const MyApp());
   // runApp(const GridStock());
-  runWeather();
-  // runApp(const MaterialApp(
-  //   home: Scaffold(
-  //     body: SingleChoiceQuiz(),
-  //   ),
-  // ));
+  // runWeather();
+  runApp(const MaterialApp(
+    home: Scaffold(
+      body: CardDetail(),
+    ),
+  ));
   // // runApp(const MyListviewBuilder());
 
   final Question question =
