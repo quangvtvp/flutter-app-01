@@ -8,7 +8,7 @@ void main() {
       body: Center(
         child: 
         StockCard(
-          symbol: "TUYEN",
+          symbol: "APPL",
           company: "Apple Inc",
           price: 142.90,
           change: 0.63,
@@ -47,11 +47,10 @@ class StockCard extends StatelessWidget {
         children: [RichText(
   text: TextSpan(
     children: [
-      TextSpan(text: "T", style: TextStyle(color: Colors.red, fontSize: 24)),
-      TextSpan(text: "U", style: TextStyle(color: Colors.blue, fontSize: 24)),
-      TextSpan(text: "Y", style: TextStyle(color: Colors.green, fontSize: 24)),
-      TextSpan(text: "E", style: TextStyle(color: Colors.orange, fontSize: 24)),
-      TextSpan(text: "N", style: TextStyle(color: Colors.purple, fontSize: 24)),
+      TextSpan(text: "A", style: TextStyle(color: Colors.red, fontSize: 24)),
+      TextSpan(text: "P", style: TextStyle(color: Colors.blue, fontSize: 24)),
+      TextSpan(text: "P", style: TextStyle(color: Colors.green, fontSize: 24)),
+      TextSpan(text: "L", style: TextStyle(color: Colors.orange, fontSize: 24)),
     ],
   ),
  ),
