@@ -79,7 +79,7 @@ class _ListViewState extends State<MyListView> {
           Expanded(flex: 20, child: MeaningCard(_currentPage, vocab_data)),
           Expanded(
             flex: 1,
-            child: PageProgress(_currentPage, itemcount),
+            child: PageProgress2(_currentPage, itemcount),
           )
         ]);
   }
@@ -102,7 +102,7 @@ Widget EnglishCard(int index, int _currentPage, List vocab_data) {
         child: Align(
           child: Text(
             '${vocab_data[index].englishWord}',
-            style: TextStyle(fontSize: 50),
+            style: TextStyle(fontSize: _currentPage == index ? 50 : 25),
           ),
         ),
       ),
@@ -117,7 +117,6 @@ Widget MeaningCard(int _currentPage, List vocab_data) {
     height: 40,
     alignment: Alignment.center,
     decoration: BoxDecoration(
-      //color: Colors.blue,
       color: Colors.blue,
       borderRadius: BorderRadius.circular(10 * _currentPage.toDouble()),
     ),
@@ -146,8 +145,7 @@ Widget MeaningCard(int _currentPage, List vocab_data) {
 // }
 
 Container PageProgress(int _currentPage, int itemcount) {
-  double progress =
-      (_currentPage + _currentPage * (1 / (itemcount - 1))) / itemcount;
+  double progress = _currentPage / (itemcount - 1);
 
   return Container(
     decoration: BoxDecoration(
@@ -177,3 +175,29 @@ Container PageProgress(int _currentPage, int itemcount) {
   );
 }
 //i have no idea how doest it works, but it works !
+
+Container PageProgress2(int _currentPage, int itemcount) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(100),
+    ),
+    child: progress(_currentPage, itemcount),
+  );
+}
+// liệu có thể dùng pageview để tạo hiệu ứng chuyển tiếp không ?
+
+Row progress(int _currentPage, int itemcount) {
+  List<Widget> a = List.generate(
+      itemcount,
+      (index) => Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: (index == _currentPage) ? Colors.purple : Colors.white,
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+          ));
+  return Row(children: [for (int i = 0; i < itemcount; i++) a[i]]);
+}
