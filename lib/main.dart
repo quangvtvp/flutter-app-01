@@ -6,8 +6,7 @@ void main() {
     home: Scaffold(
       backgroundColor: Color.fromARGB(255, 249, 236, 219),
       body: Center(
-        child: 
-        StockCard(
+        child: StockCard(
           symbol: "APPL",
           company: "Apple Inc",
           price: 142.90,
@@ -39,31 +38,40 @@ class StockCard extends StatelessWidget {
       padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 255, 255, 255),
-        borderRadius: BorderRadius.circular(40), 
+        borderRadius: BorderRadius.circular(40),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [RichText(
-  text: TextSpan(
-    children: [
-      TextSpan(text: "A", style: TextStyle(color: Colors.red, fontSize: 24)),
-      TextSpan(text: "P", style: TextStyle(color: Colors.blue, fontSize: 24)),
-      TextSpan(text: "P", style: TextStyle(color: Colors.green, fontSize: 24)),
-      TextSpan(text: "L", style: TextStyle(color: Colors.orange, fontSize: 24)),
-    ],
-  ),
- ),
+        children: [
+          RichText(
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                    text: "A",
+                    style: TextStyle(color: Colors.red, fontSize: 24)),
+                TextSpan(
+                    text: "P",
+                    style: TextStyle(color: Colors.blue, fontSize: 24)),
+                TextSpan(
+                    text: "P",
+                    style: TextStyle(color: Colors.green, fontSize: 24)),
+                TextSpan(
+                    text: "L",
+                    style: TextStyle(color: Colors.orange, fontSize: 24)),
+              ],
+            ),
+          ),
           Text(company,
-              style: TextStyle(fontSize: 13, color: const Color.fromARGB(255, 255, 209, 174))),
-
+              style: TextStyle(
+                  fontSize: 13,
+                  color: const Color.fromARGB(255, 255, 209, 174))),
           const SizedBox(height: 25),
           Text("\$$price",
               style:
                   const TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-
           const SizedBox(height: 10),
-     Text(
+          Text(
             "${change.toStringAsFixed(2)}%",
             style: TextStyle(
               fontSize: 16,
