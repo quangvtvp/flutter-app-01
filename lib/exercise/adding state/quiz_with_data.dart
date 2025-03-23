@@ -10,8 +10,9 @@ class Answer {
 class Question {
   final String text;
   final List<Answer> answers;
-
-  Question({required this.text, required this.answers});
+  final String type; // single or multiple, better to be an enum
+  List<int> selectedAnswerIndex = [];
+  Question({required this.text, required this.answers, required this.type});
 }
 
 class SingleChoiceQuizV2 extends StatefulWidget {
