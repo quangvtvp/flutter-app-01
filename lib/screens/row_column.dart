@@ -180,19 +180,20 @@ class WeeklyWeatherCard extends StatelessWidget {
       child: Container(
         width: 80,
         height: 70,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 20, color: Colors.white),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(day.substring(0, 3),
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Colors.white)),
-            SizedBox(height: 2),
-            Text(temp, style: TextStyle(fontSize: 10, color: Colors.white70)),
+            const SizedBox(height: 2),
+            Text(temp,
+                style: const TextStyle(fontSize: 10, color: Colors.white70)),
           ],
         ),
       ),
