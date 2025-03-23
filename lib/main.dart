@@ -6,7 +6,7 @@ import 'package:flutter_application/screens/welcome.dart';
 void main() {
   // runApp(const MyApp());
   runApp(const MaterialApp(
-    home: MyQuestionPageView(),
+    home: MyApp(),
   ));
 }
 
@@ -17,43 +17,47 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter Demo Home Page'),
-        ),
-        body: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyHomePageWidget(),
-                    ));
-              },
-              child: const Text('Open MyHomePage'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
+      home: home(context),
+    );
+  }
+
+  Scaffold home(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Demo Home Page'),
+      ),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const LeaderboardScreen()),
-                );
-              },
-              child: const Text('Open Leaderboard'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Placeholder()),
-                );
-              },
-              child: const Text('Open Welcome'),
-            ),
-          ],
-        ),
+                    builder: (context) => const MyHomePageWidget(),
+                  ));
+            },
+            child: const Text('Open MyHomePage'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LeaderboardScreen()),
+              );
+            },
+            child: const Text('Open Leaderboard'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Placeholder()),
+              );
+            },
+            child: const Text('Open Welcome'),
+          ),
+        ],
       ),
     );
   }
