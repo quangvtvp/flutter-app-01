@@ -12,15 +12,12 @@ class _MyChoiceState extends State<MyChoice> {
 
   final List<String> options = ["London", "Berlin", "Paris", "Rome"];
   final String correctAnswer = "Paris"; // Đáp án đúng
-
-  void checkAnswer() {
-    if (selectedOption == correctAnswer) {
-      print(" Correct Answer!");
-    } else {
-      print(" Wrong Answer!");
-    }
+  bool isCheck = false;
+   void checkAnswer() {
+    setState(() {
+  isCheck = true;
+    });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,18 +49,27 @@ class _MyChoiceState extends State<MyChoice> {
                   // Danh sách câu trả lời
                   Column(
                     children: options.map((option) {
-                      return RadioListTile<String>(
+                      var radioListTile = RadioListTile<String>(
                         title:
-                            Text(option, style: const TextStyle(fontSize: 20)),
-                        value: option,
+                            Text(option,
+                             style: TextStyle(fontSize: 20, 
+                             color: isCheck
+                                ? (option == correctAnswer
+                                    ? Colors.green // Đúng -> Xanh
+                                    : (option == selectedOption ? Colors.red : Colors.black)) // Sai -> Đỏ
+                                : Colors.black, ),),// Mặc định đen),
+                         value: option,
+                         
                         groupValue: selectedOption,
                         onChanged: (value) {
                           setState(() {
                             selectedOption = value;
                           });
                         },
+                         
                         activeColor: Colors.deepPurple,
                       );
+                      return radioListTile;
                     }).toList(),
                   ),
 
