@@ -1,7 +1,72 @@
 import 'package:flutter/material.dart';
 
+class MyQuestionPageView extends StatelessWidget {
+  const MyQuestionPageView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var pageController = PageController(viewportFraction: 0.8);
+    return Container(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 450,
+            child: PageView(
+              controller: pageController,
+              // refactor to use PageView.builder
+              // define list of data via class object
+              children: [
+                MyChoice(
+                  question: 'What is the capital of France?',
+                  options: ["London", "Berlin", "Paris", "Rome"],
+                ),
+                MyChoice(
+                  question: 'What is the capital of Vietnam?',
+                  options: ["London", "Berlin", "Hanoi", "Rome"],
+                ),
+                MyChoice(
+                  question: 'What is the capital of Lao?',
+                  options: ["Vienchang", "Berlin", "Paris", "Rome"],
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(),
+          ),
+          // add tab view indicator
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: const Text('BACK'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: const Text('NEXT'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class MyChoice extends StatefulWidget {
-  const MyChoice({super.key});
+  final String question;
+  final List<String> options;
+  const MyChoice({super.key, required this.question, required this.options});
 
   @override
   State<MyChoice> createState() => _MyChoiceState();
@@ -13,11 +78,12 @@ class _MyChoiceState extends State<MyChoice> {
   final List<String> options = ["London", "Berlin", "Paris", "Rome"];
   final String correctAnswer = "Paris"; // Đáp án đúng
   bool isCheck = false;
-   void checkAnswer() {
+  void checkAnswer() {
     setState(() {
-  isCheck = true;
+      isCheck = true;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +94,7 @@ class _MyChoiceState extends State<MyChoice> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          height: 450,
+          height: 400,
           child: Card(
             color: Colors.white,
             elevation: 10,
@@ -37,9 +103,9 @@ class _MyChoiceState extends State<MyChoice> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "What is the capital of France?",
-                    style: TextStyle(
+                  Text(
+                    widget.question,
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -48,58 +114,37 @@ class _MyChoiceState extends State<MyChoice> {
 
                   // Danh sách câu trả lời
                   Column(
-                    children: options.map((option) {
+                    children: widget.options.map((option) {
                       var radioListTile = RadioListTile<String>(
-                        title:
-                            Text(option,
-                             style: TextStyle(fontSize: 20, 
-                             color: isCheck
+                        title: Text(
+                          option,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: isCheck
                                 ? (option == correctAnswer
                                     ? Colors.green // Đúng -> Xanh
-                                    : (option == selectedOption ? Colors.red : Colors.black)) // Sai -> Đỏ
-                                : Colors.black, ),),// Mặc định đen),
-                         value: option,
-                         
+                                    : (option == selectedOption
+                                        ? Colors.red
+                                        : Colors.black)) // Sai -> Đỏ
+                                : Colors.black,
+                          ),
+                        ), // Mặc định đen),
+                        value: option,
+
                         groupValue: selectedOption,
                         onChanged: (value) {
                           setState(() {
                             selectedOption = value;
                           });
                         },
-                         
+
                         activeColor: Colors.deepPurple,
                       );
                       return radioListTile;
                     }).toList(),
                   ),
 
-                  const Spacer(),
-
                   // Nút kiểm tra đáp án
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                      ),
-                      onPressed: checkAnswer,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 16.0,
-                          horizontal: 32,
-                        ),
-                        child: Text("Check Answer",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            )),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
