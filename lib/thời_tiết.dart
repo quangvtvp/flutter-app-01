@@ -215,7 +215,7 @@ class DailyWeatherCard extends StatelessWidget {
                   fontWeight: FontWeight.bold)),
                   Icon(
             getWeatherIcon(minTemp),
-            color: getWeatherColor(minTemp), // Áp dụng màu theo nhiệt độ
+            color: getWeatherColor(minTemp),
             size: 30,
           ),
 
