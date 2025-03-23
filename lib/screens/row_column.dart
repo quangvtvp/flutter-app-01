@@ -7,6 +7,14 @@ void main() {
   ));
 }
 
+class WeaatherModel {
+  final String day;
+  final String temp;
+  final IconData icon;
+
+  WeaatherModel({required this.day, required this.temp, required this.icon});
+}
+
 class WeatherForecastScreen extends StatefulWidget {
   @override
   _WeatherForecastScreenState createState() => _WeatherForecastScreenState();
@@ -68,14 +76,20 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
     ],
   ];
 
-  final List<Map<String, dynamic>> weeklyWeather = [
-    {"day": "Monday", "temp": "18°/16°", "icon": Icons.cloud},
-    {"day": "Tuesday", "temp": "16°/15°", "icon": Icons.ac_unit},
-    {"day": "Wednesday", "temp": "19°/16°", "icon": Icons.cloud},
-    {"day": "Thursday", "temp": "22°/20°", "icon": Icons.wb_sunny},
-    {"day": "Friday", "temp": "23°/21°", "icon": Icons.cloud},
-    {"day": "Saturday", "temp": "24°/22°", "icon": Icons.wb_sunny},
-    {"day": "Sunday", "temp": "21°/19°", "icon": Icons.cloud},
+  // final List<Map<String, dynamic>> weeklyWeather = [
+  //   {"day": "Monday", "temp": "18°/16°", "icon": Icons.cloud},
+  //   {"day": "Tuesday", "temp": "16°/15°", "icon": Icons.ac_unit},
+  //   {"day": "Wednesday", "temp": "19°/16°", "icon": Icons.cloud},
+  //   {"day": "Thursday", "temp": "22°/20°", "icon": Icons.wb_sunny},
+  //   {"day": "Friday", "temp": "23°/21°", "icon": Icons.cloud},
+  //   {"day": "Saturday", "temp": "24°/22°", "icon": Icons.wb_sunny},
+  //   {"day": "Sunday", "temp": "21°/19°", "icon": Icons.cloud},
+  // ];
+
+  final List<WeaatherModel> weekWeatherList = [
+    WeaatherModel(day: "Monday", temp: "18°/16°", icon: Icons.cloud),
+    WeaatherModel(day: "Tuesday", temp: "16°/15°", icon: Icons.ac_unit),
+    WeaatherModel(day: "Wednesday", temp: "19°/16°", icon: Icons.cloud),
   ];
 
   @override
@@ -109,7 +123,7 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
             height: 80, // Chiều cao nhỏ hơn 1/4
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: List.generate(weeklyWeather.length, (index) {
+              children: List.generate(weekWeatherList.length, (index) {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -117,9 +131,9 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
                     });
                   },
                   child: WeeklyWeatherCard(
-                    day: weeklyWeather[index]["day"],
-                    temp: weeklyWeather[index]["temp"],
-                    icon: weeklyWeather[index]["icon"],
+                    day: weekWeatherList[index].day,
+                    temp: weekWeatherList[index].temp,
+                    icon: weekWeatherList[index].icon,
                     isSelected: index == selectedDayIndex,
                   ),
                 );
