@@ -120,6 +120,7 @@ class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
                     day: weeklyWeather[index]["day"],
                     temp: weeklyWeather[index]["temp"],
                     icon: weeklyWeather[index]["icon"],
+                    isSelected: index == selectedDayIndex,
                   ),
                 );
               }),
@@ -167,16 +168,21 @@ class WeeklyWeatherCard extends StatelessWidget {
   final String day;
   final String temp;
   final IconData icon;
+  final bool isSelected;
 
   const WeeklyWeatherCard(
-      {required this.day, required this.temp, required this.icon});
+      {super.key,
+      required this.day,
+      required this.temp,
+      required this.icon,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      color: Colors.grey[850],
+      color: isSelected ? Colors.blue[200] : Colors.grey[850],
       child: Container(
         width: 80,
         height: 70,
