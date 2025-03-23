@@ -16,7 +16,7 @@ class WeatherScreen extends StatelessWidget {
       backgroundColor: Colors.black87,
       appBar: AppBar(
         title: Text("Weather Forecast"),
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.blue,
       ),
       body: Column(
         children: [
@@ -28,6 +28,14 @@ class WeatherScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class HourlyForcast {
+  final String time;
+  final int temp;
+  final IconData icon;
+
+  HourlyForcast({required this.time, required this.temp, required this.icon});
 }
 
 class HourlyForecast extends StatelessWidget {
@@ -43,7 +51,7 @@ class HourlyForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 150,
       child: Align(
         alignment: Alignment.centerRight,
@@ -82,20 +90,20 @@ class HourlyWeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 80,
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.symmetric(horizontal: 7.4),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(horizontal: 7.4),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(10),
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.blue, width: 1),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(time, style: TextStyle(color: Colors.white, fontSize: 14)),
-          Spacer(),
+          const Spacer(),
           Icon(icon, color: Colors.white, size: 40),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text("$temp°C", style: TextStyle(color: Colors.white, fontSize: 14)),
         ],
       ),
@@ -145,7 +153,7 @@ class DailyForecast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         height: 120,
         child: ListView.builder(
           scrollDirection: Axis.horizontal, //vuốt ngang
@@ -179,10 +187,11 @@ class DailyWeatherCard extends StatelessWidget {
       return Icons.wb_sunny;
     } else if (minTemp >= 16) {
       return Icons.cloud;
-    } else{
-        return Icons.ac_unit;
-      }
+    } else {
+      return Icons.ac_unit;
+    }
   }
+
   Color getWeatherColor(int temp) {
     if (temp >= 19) {
       return Colors.orangeAccent;
@@ -197,10 +206,10 @@ class DailyWeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 120,
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.blue, width: sqrt1_2) // viền
           ),
@@ -209,18 +218,17 @@ class DailyWeatherCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(day,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.bold)),
-                  Icon(
+          Icon(
             getWeatherIcon(minTemp),
             color: getWeatherColor(minTemp),
             size: 30,
           ),
-
           Text("$maxTemp°/$minTemp°",
-              style: TextStyle(color: Colors.white, fontSize: 12)),
+              style: const TextStyle(color: Colors.white, fontSize: 12)),
         ],
       ),
     );
