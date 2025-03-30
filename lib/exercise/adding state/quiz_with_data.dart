@@ -5,6 +5,13 @@ class Answer {
   final bool isCorrect;
 
   Answer({required this.text, required this.isCorrect});
+
+  factory Answer.fromJson(Map<String, dynamic> json) {
+    return Answer(
+      text: json['text'],
+      isCorrect: json['isCorrect'],
+    );
+  }
 }
 
 class Question {
@@ -13,6 +20,15 @@ class Question {
   final String type; // single or multiple, better to be an enum
   List<int> selectedAnswerIndex = [];
   Question({required this.text, required this.answers, required this.type});
+  factory Question.fromJson(Map<String, dynamic> json) {
+    return Question(
+      text: json['text'],
+      answers: (json['answers'] as List).map((element) {
+        return Answer.fromJson(element);
+      }).toList(),
+      type: json['type'],
+    );
+  }
 }
 
 class SingleChoiceQuizV2 extends StatefulWidget {

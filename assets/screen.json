@@ -1,0 +1,25 @@
+{
+  "title": "Hello Flutter",
+  "leaderboard": [
+    {
+      "name": "Huy",
+      "score": 100
+    },
+    {
+      "name": "Hoa",
+      "score": 90
+    },
+    {
+      "name": "Tuấn",
+      "score": 80
+    },
+    {
+      "name": "Hương",
+      "score": 70
+    },
+    {
+      "name": "Hải",
+      "score": 60
+    }
+  ]
+}
