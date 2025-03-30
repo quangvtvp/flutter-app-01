@@ -4,12 +4,13 @@ import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const MyApp());
+  // runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
+<<<<<<< HEAD
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -47,6 +48,17 @@ class Homewidget extends StatelessWidget {
     );
   }
 }
+=======
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       title: 'Flutter Demo',
+//       home: RowAndColumn(),
+//     );
+//   }
+// }
+>>>>>>> 068f1fbaf8e92313a95cd12bd7f689e86311c3da
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
