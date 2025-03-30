@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: MychoicePageView(),
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: MychoicePageView(),
+//   ));
+// }
 
 class MychoicePageView extends StatefulWidget {
   const MychoicePageView({super.key});
