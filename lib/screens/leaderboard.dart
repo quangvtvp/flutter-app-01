@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-  
-
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({super.key});
 
@@ -19,21 +16,36 @@ class LeaderboardScreen extends StatelessWidget {
         "rank": 4,
         "name": "Smith Carol",
         "score": "6/10",
-        "image": "assets/user1.jpg"
+        "image":
+            "https://image.nhandan.vn/w800/Files/Images/2022/03/24/Cristiano_Ronaldo_4-1648112600825.jpeg.webp"
       },
       {
         "rank": 5,
         "name": "Harry",
         "score": "5/10",
-        "image": "assets/user2.jpg"
+        "image":
+            "https://image.nhandan.vn/w800/Files/Images/2022/03/24/Cristiano_Ronaldo_4-1648112600825.jpeg.webp"
       },
-      {"rank": 6, "name": "Jon", "score": "4/10", "image": "assets/user3.jpg"},
-      {"rank": 7, "name": "Ken", "score": "3/10", "image": "assets/user4.jpg"},
+      {
+        "rank": 6,
+        "name": "Jon",
+        "score": "4/10",
+        "image":
+            "https://image.nhandan.vn/w800/Files/Images/2022/03/24/Cristiano_Ronaldo_4-1648112600825.jpeg.webp"
+      },
+      {
+        "rank": 7,
+        "name": "Ken",
+        "score": "3/10",
+        "image":
+            "https://image.nhandan.vn/w800/Files/Images/2022/03/24/Cristiano_Ronaldo_4-1648112600825.jpeg.webp"
+      },
       {
         "rank": 8,
         "name": "Petter",
         "score": "2/10",
-        "image": "assets/user5.jpg"
+        "image":
+            "https://image.nhandan.vn/w800/Files/Images/2022/03/24/Cristiano_Ronaldo_4-1648112600825.jpeg.webp"
       },
     ];
 
@@ -67,8 +79,9 @@ class LeaderboardScreen extends StatelessWidget {
 
   Widget _buildTopThree(List<Map<String, dynamic>> users) {
     return Container(
+      height: 220,
       decoration: const BoxDecoration(
-        color: Colors.green,
+        color: Color.fromRGBO(100, 142, 139, 1),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30),
@@ -76,10 +89,13 @@ class LeaderboardScreen extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildTopUser(users[0], 60, 3),
-          _buildTopUser(users[1], 80, 1, isChampion: true),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: _buildTopUser(users[1], 80, 1, isChampion: true),
+          ),
           _buildTopUser(users[2], 60, 2),
         ],
       ),
@@ -89,21 +105,30 @@ class LeaderboardScreen extends StatelessWidget {
   Widget _buildTopUser(Map<String, dynamic> user, double size, int rank,
       {bool isChampion = false}) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment:
+          isChampion ? MainAxisAlignment.start : MainAxisAlignment.end,
       children: [
         Stack(
           alignment: Alignment.center,
           children: [
             CircleAvatar(
               radius: size / 2,
-              backgroundImage: AssetImage(user["image"]),
+              backgroundImage: NetworkImage(
+                  "https://image.nhandan.vn/w800/Files/Images/2022/03/24/Cristiano_Ronaldo_4-1648112600825.jpeg.webp"),
             ),
             if (isChampion)
-              CircleAvatar(
-                radius: size / 2 + 5,
-                backgroundColor: Colors.yellow,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.yellow,
+                  border: Border.all(color: Colors.yellow, width: 3),
+                ),
+                child: CircleAvatar(
+                  radius: size / 2 + 5,
+                  backgroundImage: NetworkImage(
+                      "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTuqmrx5e_mLUJdFRMBSjfvojvWtGs8th027w_2GVvqouy6dkr_MbHORDgV0GTq-PlKuqfFlhjJi1iIziGq9Rc2ag"),
+                ),
               ),
-            
           ],
         ),
         const SizedBox(height: 5),
@@ -129,7 +154,7 @@ class LeaderboardScreen extends StatelessWidget {
           const SizedBox(width: 10),
           CircleAvatar(
             radius: 20,
-            backgroundImage: AssetImage(user["image"]),
+            backgroundImage: NetworkImage(user["image"]),
           ),
           const SizedBox(width: 10),
           Expanded(

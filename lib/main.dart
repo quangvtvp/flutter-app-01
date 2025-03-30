@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/leaderboard.dart';
+import 'package:flutter_application/screens/single_choice.dart';
 import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const WelcomeScreen());
+  runApp(const MaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,14 +16,71 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('build');
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      home: home(context),
+    );
+  }
+
+  Scaffold home(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Demo Home Page'),
       ),
-      home: const MyHomePage(title: 'My screen second'),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyHomePageWidget(),
+                  ));
+            },
+            child: const Text('Open MyHomePage'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LeaderboardScreen()),
+              );
+            },
+            child: const Text('Open Leaderboard'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Placeholder()),
+              );
+            },
+            child: const Text('Open Welcome'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyHomePageWidget extends StatelessWidget {
+  const MyHomePageWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Demo Home Page'),
+      ),
+      body: Container(
+        color: Colors.blue,
+        child: const Center(
+          child: Text(
+            'Hello World',
+            style: TextStyle(fontSize: 30),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -49,7 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     print('initState');
-    
   }
 
   @override
