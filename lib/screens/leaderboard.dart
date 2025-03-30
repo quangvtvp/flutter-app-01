@@ -56,10 +56,6 @@ class LeaderboardScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
-        ),
       ),
       body: Column(
         children: [

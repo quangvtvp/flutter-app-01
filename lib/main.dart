@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/card2.dart';
 import 'package:flutter_application/screens/leaderboard.dart';
 import 'package:flutter_application/screens/single_choice.dart';
+import 'package:flutter_application/screens/single_choice2.dart';
 import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
@@ -52,10 +54,20 @@ class MyApp extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Placeholder()),
+                MaterialPageRoute(
+                    builder: (context) => const MychoicePageView()),
               );
             },
-            child: const Text('Open Welcome'),
+            child: const Text('Quiz screen'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Card2()),
+              );
+            },
+            child: const Text('Card screen screen'),
           ),
         ],
       ),

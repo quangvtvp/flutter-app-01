@@ -21,7 +21,7 @@ class _MychoicePageViewState extends State<MychoicePageView> {
     Question(
       question: "What is the capital of France?",
       options: ["London", "Berlin", "Paris", "Rome"],
-      correctAnswer: "Paris",
+      correctAnswer: "paris",
     ),
     Question(
       question: "Which planet is known as the Red Planet?",
@@ -37,8 +37,7 @@ class _MychoicePageViewState extends State<MychoicePageView> {
         curve: Curves.easeInOut,
       );
     } else {
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -185,21 +184,21 @@ class _QuestionCardState extends State<QuestionCard> {
                 }).toList(),
               ),
               if (widget.question.isChecked)
-               Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Text(
-      "",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: widget.question.selectedOption == widget.question.correctAnswer
-            ? Colors.green
-            : Colors.red,
-      ),
-    ),
-               ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: widget.question.selectedOption ==
+                              widget.question.correctAnswer
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                  ),
+                ),
               // const SizedBox(height: 20),
-              
             ],
           ),
         ),
