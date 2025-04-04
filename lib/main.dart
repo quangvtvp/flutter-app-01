@@ -10,6 +10,7 @@ import 'package:flutter_application/exercise/adding%20state/quiz_pageview.dart';
 import 'package:flutter_application/exercise/adding%20state/quiz_pageview_fromjson.dart';
 import 'package:flutter_application/exercise/adding%20state/quiz_with_data.dart';
 import 'package:flutter_application/exercise/adding%20state/single_choice.dart';
+import 'package:flutter_application/exercise/adding%20state/todo.dart';
 import 'package:flutter_application/exercise/cards.dart';
 import 'package:flutter_application/exercise/data/quiz.dart';
 import 'package:flutter_application/exercise/grid_stock.dart';
@@ -71,7 +72,14 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => QuizScreen()));
             },
             child: Text("Take a quiz"),
-          )
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => TodoApp()));
+            },
+            child: Text("Go to TODO List"),
+          ),
         ],
       ),
     );
