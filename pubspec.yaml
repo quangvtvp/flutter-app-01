@@ -62,6 +62,7 @@ flutter:
   assets:
     - assets/data.json
     - assets/screen.json
+    - assets/student_list.json
     - assets/quiz.json
     - assets/sound/tick.wav
     - assets/sound/win.wav

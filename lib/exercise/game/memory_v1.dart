@@ -22,6 +22,26 @@ class _MyWidgetState extends State<MyMomeryGame> {
     'E',
     'F',
     'F',
+    'G',
+    'G',
+    'H',
+    'H',
+    'A',
+    'A',
+    'B',
+    'B',
+    'C',
+    'C',
+    'D',
+    'D',
+    'E',
+    'E',
+    'F',
+    'F',
+    'G',
+    'G',
+    'H',
+    'H',
   ];
   late List<bool> _isFlipped;
   final List _activeCards = [];
@@ -117,11 +137,11 @@ class _MyWidgetState extends State<MyMomeryGame> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Player 1: ${_score[0]}",
+                  Text("Player 1 - Junho: ${_score[0]}",
                       style: _currentPlayer == 0 ? boldTextStyle : textStyle),
-                  Text("Player 2: ${_score[1]}",
+                  Text("Player 2 - Hue: ${_score[1]}",
                       style: _currentPlayer == 1 ? boldTextStyle : textStyle),
-                  Text("Player 3: ${_score[2]}",
+                  Text("Player 3 - Quang: ${_score[2]}",
                       style: _currentPlayer == 2 ? boldTextStyle : textStyle),
                 ],
               ),
@@ -130,7 +150,7 @@ class _MyWidgetState extends State<MyMomeryGame> {
               child: GridView.builder(
                 itemCount: _characters.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                  crossAxisCount: 9,
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                 ),
