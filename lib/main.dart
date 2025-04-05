@@ -13,6 +13,8 @@ import 'package:flutter_application/exercise/adding%20state/single_choice.dart';
 import 'package:flutter_application/exercise/adding%20state/todo.dart';
 import 'package:flutter_application/exercise/cards.dart';
 import 'package:flutter_application/exercise/data/quiz.dart';
+import 'package:flutter_application/exercise/game/memory.dart';
+import 'package:flutter_application/exercise/game/memory_v1.dart';
 import 'package:flutter_application/exercise/grid_stock.dart';
 import 'package:flutter_application/exercise/stock.dart';
 import 'package:flutter_application/exercise/weather.dart';
@@ -50,7 +52,7 @@ import 'package:flutter_application/model/vocabulary.dart';
 // }
 
 void main() {
-  runApp(MaterialApp(home: HomePage()));
+  runApp(MyMomeryGame());
 }
 
 class HomePage extends StatelessWidget {
@@ -79,6 +81,20 @@ class HomePage extends StatelessWidget {
                   context, MaterialPageRoute(builder: (context) => TodoApp()));
             },
             child: Text("Go to TODO List"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MemoryGameScreen()));
+            },
+            child: Text("Play memory game"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyMomeryGame()));
+            },
+            child: Text("gamev1"),
           ),
         ],
       ),
