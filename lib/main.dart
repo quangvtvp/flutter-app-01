@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/BTVN/ListView.dart';
-import 'package:flutter_application/BTVN/WeatherCard.dart';
-import 'package:flutter_application/BTVN/MarketCard.dart';
+import 'package:flutter_application/test.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const ListWidget());
+  runApp(const MyJsonParse());
 }
 
 class MyApp extends StatelessWidget {

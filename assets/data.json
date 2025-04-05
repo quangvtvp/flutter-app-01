@@ -1,0 +1,10 @@
+{
+  "question": "Ngôn ngữ nào được dùng để viết ứng dụng Flutter?",
+  "choices": [
+    "Java",
+    "Kotlin",
+    "Dart",
+    "JavaScript"
+  ],
+  "correctAnswerIndex": 2
+}
