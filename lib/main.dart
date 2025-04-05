@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/test.dart';
+import 'package:flutter_application/BTVN/memorygame.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const MyJsonParse());
+  runApp(const MyWidget());
 }
 
 class MyApp extends StatelessWidget {
