@@ -58,7 +58,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Todo list')),
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 122, 11, 202),
         leading: const Icon(Icons.arrow_back),
       ),
       body: Column(
@@ -69,7 +69,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
             child: Text(
               'Thursday, 12 October',
               style: TextStyle(
-                color: Colors.purple,
+                color: Color.fromARGB(255, 112, 15, 154),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -81,7 +81,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               itemBuilder: (context, index) {
                 final task = tasks[index];
                 return CheckboxListTile(
-                  activeColor: Colors.purple,
+                  activeColor: const Color.fromARGB(255, 105, 14, 181),
                   title: Text(
                     task.name,
                     style: TextStyle(
@@ -105,7 +105,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 121, 7, 198),
         child: const Icon(Icons.add),
       ),
     );
