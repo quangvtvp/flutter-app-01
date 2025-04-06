@@ -82,37 +82,47 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
       ),
-      body: ListView.builder(
-        itemCount: jsonList.length,
-        itemBuilder: (context, index) {
-          var item = jsonList[index];
-
-          return ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(800),
-              child: Image.network(
-                item['avatar'],
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Recent chat",
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.students.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      setState(() {
+                        widget.students[index].isRead = true;
+                      });
+                    },
+                    onLongPress: () {
+                      setState(() {
+                        widget.students[index].isRead = false;
+                      });
+                    },
+                    title: Text(widget.students[index].name),
+                    leading: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(widget.students[index].avatar),
+                    ),
+                    trailing: Icon(
+                      Icons.messenger_sharp,
+                      color: widget.students[index].isRead
+                          ? Colors.grey
+                          : Colors.greenAccent,
+                    ),
+                  );
+                },
               ),
             ),
-            title: Text(item['name']),
-            subtitle: Text('ID: ${item['id']}'),
-            trailing: Icon(
-              Icons.message,
-              color: item['isRead']
-                  ? Colors.green
-                  : const Color.fromARGB(255, 119, 119, 119),
-            ),
-            onTap: () {
-              setState(() {
-                // Cập nhật lại giá trị isRead và làm mới danh sách
-                item['isRead'] = !item['isRead'];
-              });
-            },
-          );
-        },
+          ],
+        ),
       ),
     );
   }
