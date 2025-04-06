@@ -60,6 +60,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/anh1.jpg
+    - assets/anh2.jpeg
+    - assets/anh3.jpg
+    - assets/anh4.jpeg
+    - assets/anh5.jpeg
+    - assets/anh6.jpeg
     - assets/newchat.json
     - assets/todo.json
   #   - images/a_dot_ham.jpeg
