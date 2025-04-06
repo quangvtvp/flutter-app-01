@@ -8,35 +8,92 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String chatJson = await rootBundle.loadString('assets/newchat.json');
   String todo = await rootBundle.loadString('assets/todo.json');
+  List<dynamic> jsonChat = jsonDecode(chatJson);
+  List<dynamic> jsonTodo = jsonDecode(todo);
   List<Chat> chats = [];
   List<Todo> todos = [];
-  (jsonDecode(chatJson) as List).map((e) {
-    Chat chat = Chat.fromJson(e);
+  for (var item in jsonChat) {
+    Chat chat = Chat.fromJson(item);
     chats.add(chat);
-  });
-  (jsonDecode(todo) as List).map((e) {
-    Todo todo = Todo.fromJson(e);
+  }
+  for (var item in jsonTodo) {
+    Todo todo = Todo.fromJson(item);
     todos.add(todo);
-  });
-  print(chats);
-  print(todos);
-  runApp(const MyApp());
+  }
+  runApp(MyTodoApp(
+    todos: todos,
+  ));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyChatApp extends StatefulWidget {
+  final List<Chat> chats;
+  const MyChatApp({super.key, required this.chats});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyChatApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyChatApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Text("hello world"),
+        body: ListView.builder(
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  setState(() {
+                    widget.chats[index].isRead = false;
+                  });
+                },
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(widget.chats[index].avatar),
+                ),
+                title: Text(widget.chats[index].name),
+                trailing: widget.chats[index].isRead
+                    ? const Icon(Icons.messenger, color: Colors.green)
+                    : const Icon(Icons.messenger, color: Colors.grey),
+              );
+            },
+            itemCount: widget.chats.length),
       ),
+    );
+  }
+}
+
+class MyTodoApp extends StatefulWidget {
+  final List<Todo> todos;
+  const MyTodoApp({super.key, required this.todos});
+
+  @override
+  State<MyTodoApp> createState() => _MyTodoAppState();
+}
+
+class _MyTodoAppState extends State<MyTodoApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+          body: ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    setState(() {
+                      widget.todos[index].isDone = !widget.todos[index].isDone;
+                    });
+                  },
+                  leading: Checkbox(
+                    value: widget.todos[index].isDone,
+                    onChanged: (value) {
+                      setState(() {
+                        widget.todos[index].isDone = value!;
+                      });
+                    },
+                  ),
+                  title: Text(widget.todos[index].name),
+                );
+              },
+              itemCount: widget.todos.length)),
     );
   }
 }
