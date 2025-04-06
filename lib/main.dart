@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/BTVN/KT.dart';
 
 void main() {
-  runApp(const TodoListApp());
+  runApp(MyJsonPage());
 }
 
 class MyApp extends StatefulWidget {
