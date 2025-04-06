@@ -84,7 +84,7 @@ class RowAndColumn extends StatelessWidget {
 
   Row _buildRow1() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
           flex: 1,
