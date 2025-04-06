@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 void main() {
   runApp(MyApp());
@@ -20,20 +21,34 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  // Danh sách task mặc định
-  List<Map<String, dynamic>> tasks = [
-    {'title': 'Learn UI design', 'completed': false},
-    {'title': 'Build a Flutter App', 'completed': false},
-    {'title': 'Learn backend development', 'completed': false},
-    {'title': 'Work out', 'completed': false},
-    {'title': 'Practice english', 'completed': false},
-  ];
+  // Danh sách task
+  List<Map<String, dynamic>> tasks = [];
+
+  // Hàm đọc dữ liệu từ file JSON trong assets
+  Future<void> loadTasksFromAssets() async {
+    try {
+      // Đọc nội dung file JSON từ assets
+      String jsonData =
+          await DefaultAssetBundle.of(context).loadString('assets/todo.json');
+      setState(() {
+        tasks = jsonDecode(jsonData);
+      });
+    } catch (e) {
+      print('Lỗi khi đọc file JSON: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadTasksFromAssets(); // Gọi hàm đọc file JSON khi khởi tạo
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Todo list')),
+        title: Text('Todo list'),
         backgroundColor: Colors.purple,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -48,7 +63,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
             child: Text(
               'Thursday, 12 October',
               style: TextStyle(
-                color: Colors.purple,
+                color:Colors.purple,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -62,19 +77,19 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 return CheckboxListTile(
                   activeColor: Colors.purple,
                   title: Text(
-                    task['completed']
-                        ? '${task['title']}'.strikeThrough()
-                        : task['title'],
+                    task['isDone']
+                        ? '${task['name']}'.strikeThrough()
+                        : task['name'],
                     style: TextStyle(
-                      decoration: task['completed']
+                      decoration: task['isDone']
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                     ),
                   ),
-                  value: task['completed'],
+                  value: task['isDone'],
                   onChanged: (bool? newValue) {
                     setState(() {
-                      tasks[index]['completed'] = newValue!;
+                      tasks[index]['isDone'] = newValue!;
                     });
                   },
                   controlAffinity: ListTileControlAffinity.leading,
@@ -88,7 +103,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         onPressed: () {
           // Xử lý khi nhấn nút thêm mới
         },
-        backgroundColor: Colors.purple,
+        backgroundColor:Colors.purple,
         child: Icon(Icons.add),
       ),
     );

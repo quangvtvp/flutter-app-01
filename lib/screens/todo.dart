@@ -1,53 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  List<Todo> Todolist = [];
-
-  var s = await rootBundle.loadString('assets/todo.json');
-  String data = s;
-
-  List<dynamic> json = jsonDecode(data);
-
-  for (var item in json) {
-    Todo todos = Todo(id: item['id'], name: item['name']);
-    Todolist.add(todos);
-  }
-  runApp(
-    MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: ListView.builder(
-            itemCount: Todolist.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  title: Text(Todolist[index].name),
-                  subtitle: Text(' ${Todolist[index].id}'),
-                  leading: Text('$index'),
-                  trailing: const Icon(Icons.arrow_forward),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-class Todo {
-  final String id;
-  final String name;
-
-  Todo({required this.name, required this.id});
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,34 +15,61 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class TodoItem {
+  final int id;
+  final String name;
+  bool isDone;
+
+  TodoItem({required this.id, required this.name, required this.isDone});
+
+  factory TodoItem.fromJson(Map<String, dynamic> json) {
+    return TodoItem(
+      id: json['id'],
+      name: json['name'],
+      isDone: json['isDone'],
+    );
+  }
+}
+
 class TodoListScreen extends StatefulWidget {
   @override
-  _TodoListScreenState createState() => _TodoListScreenState();
+  State<TodoListScreen> createState() => _TodoListScreenState();
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  // Danh sách task mặc định
+  List<TodoItem> tasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadTodoJson();
+  }
+
+  Future<void> loadTodoJson() async {
+    final String response = await rootBundle.loadString('assets/todo.json');
+    final List<dynamic> data = jsonDecode(response);
+    setState(() {
+      tasks = data.map((item) => TodoItem.fromJson(item)).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Todo list')),
-        backgroundColor: Colors.purple,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
+        title: const Center(child: Text('Todo list')),
+        backgroundColor: const Color.fromARGB(255, 122, 11, 202),
+        leading: const Icon(Icons.arrow_back),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'Thursday, 12 October',
               style: TextStyle(
-                color: Colors.purple,
+                color: Color.fromARGB(255, 112, 15, 154),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -92,25 +77,23 @@ class _TodoListScreenState extends State<TodoListScreen> {
           ),
           Expanded(
             child: ListView.builder(
+              itemCount: tasks.length,
               itemBuilder: (context, index) {
-                final task = Todo(name: 'name', id: 'id');
+                final task = tasks[index];
                 return CheckboxListTile(
-                  activeColor: Colors.purple,
+                  activeColor: const Color.fromARGB(255, 105, 14, 181),
                   title: Text(
-                    task.id == 'completed'
-                        ? '${task.name}'.strikeThrough()
-                        : task.name,
+                    task.name,
                     style: TextStyle(
-                      color: Colors.black,
-                      decoration: task.id == 'completed'
+                      decoration: task.isDone
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                     ),
                   ),
-                  value: task.id == 'completed',
-                  onChanged: (bool? newValue) {
+                  value: task.isDone,
+                  onChanged: (bool? value) {
                     setState(() {
-                      // Update logic for task completion
+                      task.isDone = value!;
                     });
                   },
                   controlAffinity: ListTileControlAffinity.leading,
@@ -121,19 +104,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Xử lý khi nhấn nút thêm mới
-        },
-        backgroundColor: Colors.purple,
-        child: Icon(Icons.add),
+        onPressed: () {},
+        backgroundColor: const Color.fromARGB(255, 121, 7, 198),
+        child: const Icon(Icons.add),
       ),
     );
-  }
-}
-
-// Extension để tạo text strike-through
-extension StringExtension on String {
-  String strikeThrough() {
-    return '$this';
   }
 }
