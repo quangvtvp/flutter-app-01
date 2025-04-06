@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/BTVN/KT.dart';
 
 void main() {
-  runApp(const TodoList_app());
+  runApp(const TodoListApp());
 }
 
 class MyApp extends StatefulWidget {
