@@ -90,7 +90,15 @@ class _MyTodoAppState extends State<MyTodoApp> {
                       });
                     },
                   ),
-                  title: Text(widget.todos[index].name),
+                  title: Text(widget.todos[index].name,
+                      style: TextStyle(
+                        decoration: widget.todos[index].isDone
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                        color: widget.todos[index].isDone
+                            ? Colors.grey
+                            : Colors.black,
+                      )),
                 );
               },
               itemCount: widget.todos.length)),
