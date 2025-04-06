@@ -59,51 +59,70 @@ class _MyJsonPageState extends State<MyJsonPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('New chat'),
-          backgroundColor: Colors.green,
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              print('Thoat');
-            },
-          ),
-        ),
-        body: ListView.builder(
-          itemCount: jsonList.length,
-          itemBuilder: (context, index) {
-            var item = jsonList[index];
-
-            return ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(800),
-                child: Image.network(
-                  item['avatar'],
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(item['name']),
-              subtitle: Text('ID: ${item['id']}'),
-              trailing: Icon(
-                Icons.message,
-                color: item['isRead']
-                    ? Colors.green
-                    : const Color.fromARGB(255, 119, 119, 119),
-              ),
-              onTap: () {
-                setState(() {
-                  // Cập nhật lại giá trị isRead và làm mới danh sách
-                  item['isRead'] = !item['isRead'];
-                });
-              },
-            );
+        home: Scaffold(
+      appBar: AppBar(
+        title: Text('New chat'),
+        backgroundColor: Colors.green,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            print('Thoat');
           },
         ),
       ),
-    );
+      body: Column(
+        children: [
+          // Tiêu đề "Recent Chat"
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Recent Chat',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: ListView.builder(
+              itemCount: jsonList.length,
+              itemBuilder: (context, index) {
+                var item = jsonList[index];
+
+                return ListTile(
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(800),
+                    child: Image.network(
+                      item['avatar'],
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  title: Text(item['name']),
+                  subtitle: Text('ID: ${item['id']}'),
+                  trailing: Icon(
+                    Icons.message,
+                    color: item['isRead']
+                        ? Colors.green
+                        : const Color.fromARGB(255, 119, 119, 119),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      item['isRead'] = !item['isRead'];
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }
