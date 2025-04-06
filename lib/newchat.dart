@@ -8,7 +8,7 @@ class MynewChat extends StatefulWidget {
 }
 
 class _MynewChatState extends State<MynewChat> {
-  List<bool> isTappedList = [false, false, false, false, false, false];
+  List<bool> isTappedList = [true, true, true, true, true, true];
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +104,11 @@ class _MynewChatState extends State<MynewChat> {
           GestureDetector(
             onTap: () {
               setState(() {
-                // Set Không phải tất cả các item còn lại về false và chỉ giữ lại true cho item hiện tại
                 for (int i = 0; i < isTappedList.length; i++) {
                   if (i == index) {
-                    isTappedList[i] = !isTappedList[i];
-                  } else {
-                    // isTappedList[i] = false;
+                    if (isTappedList[i] == true) {
+                      isTappedList[i] = false;
+                    }
                   }
                 }
               });
