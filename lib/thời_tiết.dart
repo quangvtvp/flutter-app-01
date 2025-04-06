@@ -3,26 +3,28 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: WeatherScreen(),
   ));
 }
 
 class WeatherScreen extends StatelessWidget {
+  const WeatherScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: Text("Weather Forecast"),
+        title: const Text("Weather Forecast"),
         backgroundColor: Colors.black54,
       ),
       body: Column(
         children: [
-          SizedBox(height: 100),
+          const SizedBox(height: 100),
           HourlyForecast(),
-          SizedBox(height: 1),
+          const SizedBox(height: 1),
           Expanded(child: DailyForecast()),
         ],
       ),
@@ -82,9 +84,10 @@ class HourlyWeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 80,
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.symmetric(horizontal: 7.4),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(horizontal: 7.4),
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.blue, width: 1),
@@ -92,11 +95,11 @@ class HourlyWeatherCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(time, style: TextStyle(color: Colors.white, fontSize: 14)),
-          Spacer(),
+          Text(time, style: const TextStyle(color: Colors.white, fontSize: 14)),
+          const Spacer(),
           Icon(icon, color: Colors.white, size: 40),
-          SizedBox(height: 8),
-          Text("$temp°C", style: TextStyle(color: Colors.white, fontSize: 14)),
+          const SizedBox(height: 8),
+          Text("$temp°C", style: const TextStyle(color: Colors.white, fontSize: 14)),
         ],
       ),
     );
@@ -112,7 +115,7 @@ class DailyForecast extends StatelessWidget {
     },
     {
       "day": "Tuesday",
-      "maxTemp": 16,
+      "maxTemp": 18,
       "minTemp": 15,
     },
     {
@@ -197,8 +200,8 @@ class DailyWeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 120,
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(10),
@@ -209,7 +212,7 @@ class DailyWeatherCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(day,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.bold)),
@@ -220,7 +223,7 @@ class DailyWeatherCard extends StatelessWidget {
           ),
 
           Text("$maxTemp°/$minTemp°",
-              style: TextStyle(color: Colors.white, fontSize: 12)),
+              style: const TextStyle(color: Colors.white, fontSize: 12)),
         ],
       ),
     );
