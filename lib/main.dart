@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/calculator.dart';
+import 'package:flutter_application/screens/calulator_app.dart';
 import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const WelcomeScreen());
+  // runApp(const WelcomeScreen());
   // this is a comment quanglm1 branch
+  runApp(const MyCaculator());
+  // runApp(CalculatorApp());
 }
 
 class MyApp extends StatelessWidget {
