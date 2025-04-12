@@ -38,7 +38,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
   // Load JSON from local asset
   Future<List<TodoItem>> loadTodoFromAssets() async {
     // Simulate network delay
-    // This is just for demonstration purposes
     await Future.delayed(const Duration(seconds: 2));
     // Read file as String
     final jsonString = await rootBundle.loadString('assets/todo.json');
