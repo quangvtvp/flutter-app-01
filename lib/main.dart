@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/screens/welcome.dart';
+import 'package:flutter_application/todo_from_local.dart';
 
 void main() {
   // runApp(const MyApp());
-  runApp(const WelcomeScreen());
+  runApp(const MyTodoList());
 }
 
 class MyApp extends StatelessWidget {
@@ -49,7 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     print('initState');
-    
   }
 
   @override
