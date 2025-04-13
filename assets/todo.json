@@ -1,32 +1,22 @@
 [
   {
     "id": 1,
-    "name": "workout",
+    "task": "Learn Flutter Basics",
     "isDone": true
   },
   {
     "id": 2,
-    "name": "Learn Flutter",
-    "isDone": false
+    "task": "Understand Widgets",
+    "isDone": true
   },
   {
     "id": 3,
-    "name": "Learn Dart",
-    "isDone": false
+    "task": "Learn about FutureBuilder",
+    "isDone": true
   },
   {
     "id": 4,
-    "name": "english homework",
-    "isDone": false
-  },
-  {
-    "id": 5,
-    "name": "writing english eassay",
-    "isDone": false
-  },
-  {
-    "id": 6,
-    "name": "reading book",
+    "task": "Fetch data from Network",
     "isDone": false
   }
 ]

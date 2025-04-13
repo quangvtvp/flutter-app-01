@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class MyTodoList extends StatefulWidget {
   const MyTodoList({super.key});
@@ -12,15 +16,50 @@ Future<List<Todo>> loadingData() async {
   await Future.delayed(
     const Duration(seconds: 2),
   );
-  List<Todo> todos = [
-    Todo(task: "learning dart", isDone: true),
-    Todo(task: "learning flutter", isDone: false),
-    Todo(task: "build an app", isDone: false),
-  ];
+  String jsonData = await rootBundle.loadString('assets/todo.json');
+  List<dynamic> jsonList = jsonDecode(jsonData);
+  List<Todo> todos = jsonList
+      .map((json) => Todo(
+            task: json['task'],
+            isDone: json['isDone'],
+          ))
+      .toList();
   return todos;
 }
 
+Future<List<Todo>> loadingDataFromUrl() async {
+  // Simulate network delay
+  await Future.delayed(
+    const Duration(seconds: 2),
+  );
+
+  final url = Uri.parse('https://dummyjson.com/c/562b-f00f-4082-9583');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    String jsonData = response.body;
+    List<dynamic> jsonList = jsonDecode(jsonData);
+    List<Todo> todos = jsonList
+        .map((json) => Todo(
+              task: json['task'],
+              isDone: json['isDone'],
+            ))
+        .toList();
+    return todos;
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
+
 class _MyTodoListState extends State<MyTodoList> {
+  late Future<List<Todo>> futureTodoList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureTodoList = loadingDataFromUrl();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +70,7 @@ class _MyTodoListState extends State<MyTodoList> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
         body: FutureBuilder(
-            future: loadingData(),
+            future: futureTodoList,
             builder: (context, snapshot) {
               // Check connection state loading
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -43,11 +82,12 @@ class _MyTodoListState extends State<MyTodoList> {
                   );
                 } else {
                   final todos = snapshot.data;
+                  // check if todos is not null
                   return ListView.builder(
                     itemCount: todos!.length,
                     itemBuilder: (context, index) {
                       return CheckboxListTile(
-                        title: Text(todos![index].task),
+                        title: Text(todos[index].task),
                         value: todos[index].isDone,
                         onChanged: (value) {
                           setState(() {
