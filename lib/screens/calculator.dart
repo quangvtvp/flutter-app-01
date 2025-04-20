@@ -242,44 +242,49 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            // Display Area
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.black,
-                alignment: Alignment.bottomRight,
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-                child: SelectableText(
-                  _display, // Hiển thị số/kết quả/lỗi
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
+        child: Center(
+          child: SizedBox(
+            width: 400,
+            child: Column(
+              children: <Widget>[
+                // Display Area
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: Colors.black,
+                    alignment: Alignment.bottomRight,
+                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+                    child: SelectableText(
+                      _display, // Hiển thị số/kết quả/lỗi
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.right,
+                      maxLines: 1,
+                      scrollPhysics: NeverScrollableScrollPhysics(),
+                      minLines: 1,
+                    ),
                   ),
-                  textAlign: TextAlign.right,
-                  maxLines: 1,
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  minLines: 1,
                 ),
-              ),
+                // Button Area
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: <Widget>[
+                      // Rows of buttons
+                      Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("AC"), _buildButton("+/-"), _buildButton("%"), _buildButton("÷")])),
+                      Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("7"), _buildButton("8"), _buildButton("9"), _buildButton("x")])),
+                      Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("4"), _buildButton("5"), _buildButton("6"), _buildButton("-")])),
+                      Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("1"), _buildButton("2"), _buildButton("3"), _buildButton("+")])),
+                      Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("0"), _buildButton(","), _buildButton("."), _buildButton("=")])),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            // Button Area
-            Expanded(
-              flex: 5,
-              child: Column(
-                children: <Widget>[
-                  // Rows of buttons
-                  Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("AC"), _buildButton("+/-"), _buildButton("%"), _buildButton("÷")])),
-                  Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("7"), _buildButton("8"), _buildButton("9"), _buildButton("x")])),
-                  Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("4"), _buildButton("5"), _buildButton("6"), _buildButton("-")])),
-                  Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("1"), _buildButton("2"), _buildButton("3"), _buildButton("+")])),
-                  Expanded(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_buildButton("0", flex: 2), _buildButton("."), _buildButton("=")])),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

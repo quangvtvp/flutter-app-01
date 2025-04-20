@@ -27,9 +27,8 @@ class _MyCalculatorScreenState extends State<MyCalculatorScreen> {
   final String operators = '+-*:';
   String _displayText = '0';
   String _currentInput = '';
-  int _number1 = 0;
-  String _result = '';
-  bool _isEnterNumber2 = false;
+  int _result = 0;
+  String _operator = '';
 
   @override
   Widget build(BuildContext context) {
@@ -147,29 +146,40 @@ class _MyCalculatorScreenState extends State<MyCalculatorScreen> {
         _displayText = _currentInput;
       } else if (operators.contains(input)) {
         // nhap phep tinh
-        //_number1 = int.parse(_currentInput);
-        // _result = input;
-        //_displayText = input;
-        _currentInput = '';
-        _isEnterNumber2 = true;
+        _operator = input;
+
         _calculate();
       } else if (input == '=') {
         _calculate();
+      } else if (input == 'AC') {
+        _clear();
       }
     });
   }
 
+  void _clear() {
+    _currentInput = '';
+    _operator = '';
+    _result = 0;
+    _displayText = '0';
+  }
+
   void _calculate() {
     setState(() {
-      if (_isEnterNumber2) {
-        int number2 = int.parse(_currentInput);
-        if (_result == '+') {
-          _result = (_number1 + number2).toString();
-        } else if (_result == '-') {
-          _result = (_number1 - number2).toString();
+      if (_operator.isEmpty || _currentInput.isEmpty) {
+        if (_operator.isEmpty && _currentInput.isNotEmpty) {
+          _result = int.parse(_currentInput);
         }
-        _displayText = _result;
+        return;
       }
+
+      // so thu 2
+      int num2 = int.parse(_currentInput);
+      if (_operator == '+') {
+        _result += num2;
+      }
+      _currentInput = '';
+      _displayText = _result.toString();
     });
   }
 }

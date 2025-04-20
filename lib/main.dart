@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/screens/calculator.dart';
 import 'package:flutter_application/screens/calulator_app.dart';
+import 'package:flutter_application/screens/my_calculator.dart';
+import 'package:flutter_application/screens/networkingP2.dart';
 import 'package:flutter_application/screens/welcome.dart';
 
 void main() {
   // runApp(const MyApp());
   // runApp(const WelcomeScreen());
   // this is a comment quanglm1 branch
-  runApp(const MyCaculator());
+  // runApp(const MyCaculator());
   // runApp(CalculatorApp());
+  // runApp(const Cal1App());
+
+  runApp(LoginScreen());
 }
 
 class MyApp extends StatelessWidget {
@@ -54,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     print('initState');
-    
   }
 
   @override
