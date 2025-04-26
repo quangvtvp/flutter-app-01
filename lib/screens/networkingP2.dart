@@ -2,11 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() => runApp(MaterialApp(home: LoginScreen()));
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+Future<void> main() async {
+  await Supabase.initialize(
+    url: 'https://plscfoyhyjzqmxmpqedc.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc2Nmb3loeWp6cW14bXBxZWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1OTUyMTcsImV4cCI6MjA2MTE3MTIxN30.Nu3LI2uETsHh2J2zqIs1-zn4xru1Cneq8bLkYHukikE',
+  );
+  runApp(MaterialApp(home: LoginScreen()));
+}
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -18,7 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('https://us-central1-ict-app-7d697.cloudfunctions.net/api/login'),
+        Uri.parse(
+            'https://us-central1-ict-app-7d697.cloudfunctions.net/api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
@@ -35,7 +47,50 @@ class _LoginScreenState extends State<LoginScreen> {
         return data;
       }
     } catch (e) {
-      return {'success': false, 'message': 'Lỗi kết nối hoặc máy chủ: ${e.toString()}'};
+      return {
+        'success': false,
+        'message': 'Lỗi kết nối hoặc máy chủ: ${e.toString()}'
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> loginSupabase(
+      String email, String password) async {
+    try {
+      final AuthResponse response =
+          await Supabase.instance.client.auth.signInWithPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+
+      // Kiểm tra nếu người dùng tồn tại trong phản hồi (đăng nhập thành công)
+      if (response.user != null) {
+        return {
+          "success": true,
+          "message": "Đăng nhập thành công!",
+          // Giả sử 'username' ở đây là email của người dùng.
+          // Tùy thuộc vào database schema của bạn, bạn có thể cần fetch profile để lấy username thật.
+          "username": response.user!.email ?? "Người dùng",
+        };
+      } else {
+        // Trường hợp đăng nhập không thành công nhưng không ném AuthException (hiếm gặp)
+        return {
+          "success": false,
+          "message": "Đăng nhập thất bại: Thông tin không hợp lệ.",
+        };
+      }
+    } on AuthException catch (e) {
+      // Bắt các lỗi cụ thể từ Supabase Authentication
+      return {
+        "success": false,
+        "message": "Lỗi đăng nhập: ${e.message}",
+      };
+    } catch (e) {
+      // Bắt các lỗi chung khác
+      return {
+        "success": false,
+        "message": "Đã xảy ra lỗi: ${e.toString()}",
+      };
     }
   }
 
@@ -77,7 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: 'Password',
                       border: OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                        icon: Icon(_obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off),
                         onPressed: () {
                           setState(() {
                             _obscurePassword = !_obscurePassword;
@@ -103,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
-                          final result = await login(
+                          final result = await loginSupabase(
                             _usernameController.text,
                             _passwordController.text,
                           );
@@ -111,8 +168,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           final String message = result['message'] ?? '';
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(message, style: TextStyle(color: Colors.white)),
-                              backgroundColor: success ? Colors.green : Colors.red,
+                              content: Text(message,
+                                  style: TextStyle(color: Colors.white)),
+                              backgroundColor:
+                                  success ? Colors.green : Colors.red,
                             ),
                           );
                           if (success) {
