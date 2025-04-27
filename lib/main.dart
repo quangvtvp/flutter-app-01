@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/memorygame.dart';
+import 'package:flutter_application/todo_from_local.dart';
 
-void main(List<String> args) {
-  runApp(const MaterialApp(
-    home:MyMemmoryGame(),
-  ));
+void main() {
+  runApp(MyTodoList());
 }

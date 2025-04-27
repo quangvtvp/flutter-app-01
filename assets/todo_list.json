@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "task": "Learn Flutter Basics",
+        "isDone": true
+    },
+    {
+        "id": 2,
+        "task": "Understand Widgets",
+        "isDone": true
+    },
+    {
+        "id": 3,
+        "task": "Learn about FutureBuilder",
+        "isDone": false
+    },
+    {
+        "id": 4,
+        "task": "Fetch data from Network",
+        "isDone": false
+    }
+]
