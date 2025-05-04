@@ -1,11 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
- 
- void main() {
-   runApp(const MaterialApp(
-     home: LoginScreen(),
-   ));
- }
+import 'package:http/http.dart' as http;
+
+void main() => runApp(const MaterialApp(home: LoginScreen()));
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -14,96 +13,162 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool isLogin = true;
-  final supabase = Supabase.instance.client;
+  final TextEditingController _usernameController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(isLogin ? 'Đăng nhập' : 'Đăng ký')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Mật khẩu'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final email = emailController.text.trim();
-                final password = passwordController.text.trim();
-                try {
-                  if (isLogin) {
-                    await supabase.auth.signInWithPassword(
-                      email: email,
-                      password: password,
-                    );
-                  } else {
-                    await supabase.auth.signUp(
-                      email: email,
-                      password: password,
-                    );
-                  }
-
-                  if (mounted) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => HomeScreen(username: email),
-                      ),
-                    );
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Lỗi: $e'),
-                      backgroundColor: Colors.red,
+        appBar: AppBar(title: const Text('Flashcard Login')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Đăng nhập',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 32.0),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập username';
+                    }
+                    if (value.contains(' ')) {
+                      return 'Username không được chúa dấu cách';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12.0),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(!_obscureText
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
                     ),
-                  );
-                }
-              },
-              child: Text(isLogin ? 'Đăng nhập' : 'Đăng ký'),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập pw';
+                    }
+                    if (value.length <= 5) {
+                      return 'Password phải lớn hơn 5 kí tự';
+                    }
+                    return null;
+                  },
+                  obscureText: _obscureText,
+                  obscuringCharacter: 'x',
+                ),
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final result = await login(
+                          _usernameController.text, _passwordController.text);
+                      final bool success = result['success'] == true;
+                      final String message = result['message'] ?? '';
+
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(message),
+                            backgroundColor:
+                                success ? Colors.green : Colors.red),
+                      );
+                      if (success) {
+                        // Chờ SnackBar hiển thị xong rồi chuyển màn hình
+                        Future.delayed(Duration(milliseconds: 600), () {
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) =>  WelcomeScreen(),
+                            ),
+                          );
+                        });
+                      }
+                    }
+                  },
+                  child: const Text('Login'),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  isLogin = !isLogin;
-                });
-              },
-              child: Text(isLogin
-                  ? 'Chưa có tài khoản? Đăng ký'
-                  : 'Đã có tài khoản? Đăng nhập'),
-            )
-          ],
+          ),
+        ));
+  }
+  
+  login(String text, String text2) {}
+}
+
+// ignore: non_constant_identifier_names
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Welcome')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Khi logout, quay lại màn hình Login
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          },
+          child: Text('Logout'),
         ),
       ),
     );
   }
-}
 
+  Future<Map<String, dynamic>> login(String username, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            'https://us-central1-ict-app-7d697.cloudfunctions.net/api/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'username': username,
+          'password': password,
+        }),
+      );
 
-class HomeScreen extends StatelessWidget {
-  final String username;
-  const HomeScreen({super.key, required this.username});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Trang chủ học sinh')),
-      body: Center(
-        child: Text('Xin chào, $username!', style: const TextStyle(fontSize: 24)),
-      ),
-    );
+      if (response.statusCode == 200) {
+        // success
+        return jsonDecode(response.body);
+      } else {
+        // failed
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Lỗi kết nối hoặc máy chủ: ${e.toString()}'
+      };
+    }
   }
 }
 
