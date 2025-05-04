@@ -33,7 +33,7 @@ class _MyHoaState extends State<MyHoa> {
   }
 
   Future<void> fetchTopics() async {
-    final response = await supabase.from('de_van').select();
+    final response = await supabase.from('de_hoa').select();
     setState(() {
       topics = response;
     });

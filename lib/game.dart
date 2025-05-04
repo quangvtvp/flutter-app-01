@@ -6,7 +6,7 @@ void main() {
 }
 
 class MemoryGameApp extends StatelessWidget {
-  const MemoryGameApp({Key? key}) : super(key: key);
+  const MemoryGameApp({super.key});
 
   @override
   Widget build(BuildContext context) {

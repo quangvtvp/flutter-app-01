@@ -34,7 +34,7 @@ class _MySuState extends State<MySu> {
   }
 
   Future<void> fetchTopics() async {
-    final response = await supabase.from('de_van').select();
+    final response = await supabase.from('de_su').select();
     setState(() {
       topics = response;
     });

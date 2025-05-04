@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/PROJECT/hoa.dart';
 import 'package:flutter_application/PROJECT/su.dart';
 import 'package:flutter_application/PROJECT/van.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 // void main() {
-//   runApp(const MyApp());
+//   runApp(const WelcomeScreen());
 // }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://dbhwiwngltxrbuasrilt.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiaHdpd25nbHR4cmJ1YXNyaWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3NTc2MzgsImV4cCI6MjA2MTMzMzYzOH0.OSwLzj3L2u4r9_WiFDFimLUdNw3RImF0jlkMCvgAUPw',
+  );
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Trang Chủ Học Sinh',
-//       theme: ThemeData(primarySwatch: Colors.deepPurple),
-//       home: const WelcomeScreen(),
-//     );
-//   }
-// }
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: WelcomeScreen(),
+  ));
+}
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
