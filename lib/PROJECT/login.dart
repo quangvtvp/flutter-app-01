@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/welcome.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'trangchu.dart'; // nơi chứa WelcomeScreen
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
