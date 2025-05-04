@@ -1,185 +1,78 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application/PROJECT/hoa.dart';
 import 'package:flutter_application/PROJECT/su.dart';
 import 'package:flutter_application/PROJECT/van.dart';
 
 void main() {
-  // runApp(const MyApp());
-  runApp(const MaterialApp(
-    home: MyApp(),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: home(context),
-    );
-  }
-
-  Scaffold home(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Demo Home Page'),
-      ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-          
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MyVan(),
-                      ));
-                },
-                child: const Text('Môn Văn'),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MySu(),
-                    ),
-                  );
-                },
-                child: const Text('Môn lịch sử'),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MyHoa()),
-                  );
-                },
-                child: const Text('Môn hóa học'),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MyVan(),
-                      ));
-                },
-                child: const Text('Leaderboard'),
-              ),
-            ],
-          ),
-        ],
-        // ElevatedButton(
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => LeaderBoard()),
-        //     );
-        //   },
-        //   child: const Text('Card screen screen'),
-        // ),
-      ),
+      debugShowCheckedModeBanner: false,
+      title: 'Trang Chủ Học Sinh',
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      home: const HomeScreen(),
     );
   }
 }
 
-class MyHomePageWidget extends StatelessWidget {
-  const MyHomePageWidget({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Demo Home Page'),
+        title: const Text('Trang chủ học sinh'),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple,
       ),
-      body: Container(
-        color: Colors.blue,
-        child: const Center(
-          child: Text(
-            'Hello World',
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      print('dong 1');
-      print('dong 2');
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('initState');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print('build _MyHomePageState');
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.count(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          children: [
+            _buildSubjectButton(
+                context, 'Môn Văn', Icons.menu_book, const MyVan()),
+            _buildSubjectButton(
+                context, 'Lịch sử', Icons.history_edu, const MySu()),
+            _buildSubjectButton(
+                context, 'Hóa học', Icons.science, const MyHoa()),
+            _buildSubjectButton(context, 'Leaderboard', Icons.leaderboard,
+                const MyVan()), // Có thể sửa sau
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _buildSubjectButton(
+      BuildContext context, String label, IconData icon, Widget destination) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurpleAccent,
+        padding: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => destination));
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 40, color: Colors.white),
+          const SizedBox(height: 10),
+          Text(label,
+              style: const TextStyle(fontSize: 16, color: Colors.white)),
+        ],
+      ),
     );
   }
 }
