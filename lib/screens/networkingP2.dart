@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/welcome.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -6,9 +7,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
-    url: 'https://plscfoyhyjzqmxmpqedc.supabase.co',
+    url: 'https://sbcbalojhzxxvsmiainj.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc2Nmb3loeWp6cW14bXBxZWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1OTUyMTcsImV4cCI6MjA2MTE3MTIxN30.Nu3LI2uETsHh2J2zqIs1-zn4xru1Cneq8bLkYHukikE',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiY2JhbG9qaHp4eHZzbWlhaW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1ODc1NzYsImV4cCI6MjA2MDE2MzU3Nn0.wtbHv7jlXhTIxfLQJ5JQFP1r3m5u_-13Cik87BMKL9Y',
   );
   runApp(MaterialApp(home: LoginScreen()));
 }
@@ -192,25 +193,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class WelcomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Welcome')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
-          },
-          child: Text('Logout'),
         ),
       ),
     );
