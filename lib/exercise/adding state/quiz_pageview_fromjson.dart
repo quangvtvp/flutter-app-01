@@ -6,6 +6,14 @@ import 'package:flutter_application/exercise/adding%20state/quiz_pageview.dart';
 import 'package:flutter_application/exercise/adding%20state/quiz_with_data.dart';
 import 'package:flutter_application/exercise/adding%20state/single_choice.dart';
 
+void main(List<String> args) {
+  runApp(
+    const MaterialApp(
+      home: QuizScreen(),
+    ),
+  );
+}
+
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key});
 

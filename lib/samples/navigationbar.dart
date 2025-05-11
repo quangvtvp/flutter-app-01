@@ -48,6 +48,10 @@ class _NavigationbarSampleState extends State<NavigationbarSample> {
             icon: Icon(Icons.notifications),
             label: 'Notifications',
           ),
+          NavigationDestination(
+            icon: Icon(Icons.book_online_outlined),
+            label: 'Scrapbook',
+          ),
         ],
         selectedIndex: currentPageIndex,
         indicatorColor: Colors.amber[800],
@@ -68,6 +72,11 @@ class _NavigationbarSampleState extends State<NavigationbarSample> {
           VisionBoardScreen(),
           HistoryPromptScreen(),
           NotificationScreen(),
+          Center(
+            child: Text(
+              'Scrapbook',
+            ),
+          ),
         ],
       ),
     );

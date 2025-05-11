@@ -7,6 +7,12 @@ class FamilyFeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Action to create a new post
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
         title: const Text('Family Feed'),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
