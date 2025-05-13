@@ -1,56 +1,26 @@
+import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
+import 'package:flutter_application/samples/supabase_functions/model/exam_summary.dart';
+import 'package:flutter_application/samples/supabase_functions/model/option.dart';
+import 'package:flutter_application/samples/supabase_functions/model/question.dart';
+import 'package:flutter_application/samples/supabase_functions/model/subject.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Defines a shared interface for quiz data services
+// Interface for quiz services
 abstract class IQuizDataService {
-  Future<List<dynamic>> getSubjects();
-  Future<List<dynamic>> getExams(int subjectId);
-  Future<Map<String, dynamic>> getExamDetail(int examId);
+  Future<List<Subject>> getSubjects();
+  Future<List<ExamSummary>> getExams(int subjectId);
+  Future<ExamDetail> getExamDetail(int examId);
+  Future<List<ExamSummary>> getExamsHistory();
 }
-
-// =============================
-// 1. Function-based implementation
-// =============================
-
-class QuizFunctionService implements IQuizDataService {
-  final SupabaseClient client = Supabase.instance.client;
-
-  @override
-  Future<List<dynamic>> getSubjects() async {
-    final response =
-        await Supabase.instance.client.functions.invoke('get_subjects');
-    if (response.status == 200) return response.data as List<dynamic>;
-    throw Exception('Failed to fetch subjects: ${response.data}');
-  }
-
-  @override
-  Future<List<dynamic>> getExams(int subjectId) async {
-    final response = await client.functions.invoke(
-      'get_exam',
-      queryParameters: {'id': subjectId.toString()},
-    );
-    if (response.status == 200) return response.data as List<dynamic>;
-    throw Exception('Failed to fetch exams: ${response.data}');
-  }
-
-  @override
-  Future<Map<String, dynamic>> getExamDetail(int examId) async {
-    final response = await client.functions.invoke(
-      'get_exam_detail',
-      queryParameters: {'id': examId.toString()},
-    );
-    if (response.status == 200) return response.data as Map<String, dynamic>;
-    throw Exception('Failed to fetch exam detail: ${response.data}');
-  }
-}
-
 // =============================
 // 2. Direct query-based implementation
 // =============================
+
 class QuizQueryService implements IQuizDataService {
   final SupabaseClient client = Supabase.instance.client;
 
   @override
-  Future<List<dynamic>> getSubjects() async {
+  Future<List<Subject>> getSubjects() async {
     final res = await client.from('subjects').select('id, name');
     final exams = await client.from('exams').select('id, subject_id');
 
@@ -61,12 +31,16 @@ class QuizQueryService implements IQuizDataService {
     }
 
     return res
-        .map((s) => {...s, 'total_exams': examCountMap[s['id']] ?? 0})
+        .map<Subject>((s) => Subject(
+              id: s['id'],
+              name: s['name'],
+              totalExams: examCountMap[s['id']] ?? 0,
+            ))
         .toList();
   }
 
   @override
-  Future<List<dynamic>> getExams(int subjectId) async {
+  Future<List<ExamSummary>> getExams(int subjectId) async {
     final exams = await client
         .from('exams')
         .select('id, title, duration_minutes, attempt_count, subject_id')
@@ -81,12 +55,18 @@ class QuizQueryService implements IQuizDataService {
     }
 
     return exams
-        .map((e) => {...e, 'total_questions': countMap[e['id']] ?? 0})
+        .map<ExamSummary>((e) => ExamSummary(
+              id: e['id'],
+              title: e['title'],
+              duration: e['duration_minutes'],
+              attemptCount: e['attempt_count'] ?? 0,
+              totalQuestions: countMap[e['id']] ?? 0,
+            ))
         .toList();
   }
 
   @override
-  Future<Map<String, dynamic>> getExamDetail(int examId) async {
+  Future<ExamDetail> getExamDetail(int examId) async {
     final exam = await client
         .from('exams')
         .select('id, title, duration_minutes, attempt_count')
@@ -101,30 +81,36 @@ class QuizQueryService implements IQuizDataService {
     final questionIds =
         questionLinks.map((q) => q['question_id'] as int).toList();
 
-    final questions = await client
+    final questionsRaw = await client
         .from('questions')
         .select('id, content, correct_option_id')
         .inFilter('id', questionIds);
 
-    final options = await client
+    final optionsRaw = await client
         .from('options')
         .select('id, content, question_id')
         .inFilter('question_id', questionIds);
 
-    final formattedQuestions = questions
-        .map((q) => {
-              'question_id': q['id'],
-              'content': q['content'],
-              'correct_option_id': q['correct_option_id'],
-              'options':
-                  options.where((o) => o['question_id'] == q['id']).toList()
-            })
-        .toList();
+    final questions = questionsRaw.map<Question>((q) {
+      final qid = q['id'];
+      final opts = optionsRaw
+          .where((o) => o['question_id'] == qid)
+          .map<Option>((o) => Option.fromJson(o))
+          .toList();
+      return Question(
+        id: qid,
+        content: q['content'],
+        correctOptionId: q['correct_option_id'],
+        options: opts,
+      );
+    }).toList();
 
-    return {
-      ...exam,
-      'total_questions': formattedQuestions.length,
-      'questions': formattedQuestions
-    };
+    return ExamDetail(
+      id: exam['id'],
+      title: exam['title'],
+      duration: exam['duration_minutes'],
+      attemptCount: exam['attempt_count'] ?? 0,
+      questions: questions,
+    );
   }
 }

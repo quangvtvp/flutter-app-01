@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
+import 'package:flutter_application/samples/supabase_functions/model/exam_summary.dart';
+import 'package:flutter_application/samples/supabase_functions/model/question.dart';
+import 'package:flutter_application/samples/supabase_functions/model/subject.dart';
 import 'package:flutter_application/samples/supabase_functions/supabase_service.dart';
 
 // Choose service type here
-final IQuizDataService dataService =
-    QuizFunctionService(); // or QuizQueryService()
+final IQuizDataService dataService = QuizQueryService();
 
 class SubjectListScreen extends StatelessWidget {
   const SubjectListScreen({super.key});
@@ -21,19 +24,19 @@ class SubjectListScreen extends StatelessWidget {
           if (snapshot.hasError)
             return Center(child: Text(snapshot.error.toString()));
 
-          final subjects = snapshot.data as List<dynamic>;
+          final subjects = snapshot.data as List<Subject>;
           return ListView.builder(
             itemCount: subjects.length,
             itemBuilder: (_, index) {
               final subject = subjects[index];
               return ListTile(
-                title: Text(subject['name']),
-                subtitle: Text('Total exams: ${subject['total_exams']}'),
+                title: Text(subject.name),
+                subtitle: Text('Total exams: ${subject.totalExams}'),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => ExamListScreen(
-                        subjectId: subject['id'], subjectName: subject['name']),
+                        subjectId: subject.id, subjectName: subject.name),
                   ),
                 ),
               );
@@ -64,19 +67,19 @@ class ExamListScreen extends StatelessWidget {
           if (snapshot.hasError)
             return Center(child: Text(snapshot.error.toString()));
 
-          final exams = (snapshot.data as List).toList();
+          final exams = (snapshot.data as List<ExamSummary>).toList();
           return ListView.builder(
             itemCount: exams.length,
             itemBuilder: (_, index) {
               final exam = exams[index];
               return ListTile(
-                title: Text(exam['title']),
-                subtitle: Text('${exam['total_questions']} questions'),
+                title: Text(exam.title),
+                subtitle: Text('${exam.totalQuestions} questions'),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ExamDetailScreen(
-                        examId: exam['id'], title: exam['title']),
+                    builder: (_) =>
+                        ExamDetailScreen(examId: exam.id, title: exam.title),
                   ),
                 ),
               );
@@ -107,20 +110,20 @@ class ExamDetailScreen extends StatelessWidget {
           if (snapshot.hasError)
             return Center(child: Text(snapshot.error.toString()));
 
-          final exam = snapshot.data as Map<String, dynamic>;
-          final questions = exam['questions'] as List<dynamic>;
+          final exam = snapshot.data as ExamDetail;
+          final questions = exam.questions;
 
           return ListView.builder(
             itemCount: questions.length,
             itemBuilder: (_, index) {
               final q = questions[index];
               return ListTile(
-                title: Text('Q${index + 1}: ${q['content']}'),
+                title: Text('Q${index + 1}: ${q.content}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate((q['options'] as List).length, (i) {
-                    final opt = q['options'][i];
-                    return Text('- ${opt['content']}');
+                  children: List.generate((q.options).length, (i) {
+                    final opt = q.options[i];
+                    return Text('- ${opt.content}');
                   }),
                 ),
               );
