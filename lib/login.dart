@@ -3,7 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
-  runApp(MaterialApp(home: LoginScreen()));
+  runApp(MaterialApp(
+    home: LoginScreen(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 class LoginScreen extends StatefulWidget {
@@ -15,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _obscureText = true; // Biến để kiểm soát việc hiển thị/mất mật khẩu
+  bool _obscureText = true;
 
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
@@ -46,24 +49,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLogin() async {
-    // In ra giá trị của trường Password
     print('Password: ${_passwordController.text}');
 
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
       String password = _passwordController.text;
 
-      // Gọi hàm login để gửi yêu cầu đến API
       final result = await login(username, password);
 
-      // In ra kết quả phản hồi từ API
       print(result.toString());
 
-      // Kiểm tra trạng thái thành công và lấy thông báo
       final bool success = result['success'] == true;
       final String message = result['message'] ?? '';
 
-      // Hiển thị thông báo với màu nền khác nhau
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
@@ -71,12 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
-      // Nếu đăng nhập thành công, chờ 600ms rồi chuyển sang WelcomeScreen
       if (success) {
-        await Future.delayed(Duration(milliseconds: 600)); // Chờ 600ms
+        await Future.delayed(const Duration(milliseconds: 600));
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => WelcomeScreen(),
+            builder: (context) => const WelcomeScreen(),
           ),
         );
       }
@@ -86,9 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flashcard Login'),
-      ),
+      appBar: AppBar(title: const Text('Flashcard Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -162,21 +157,72 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// Màn hình WelcomeScreen
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Welcome')),
+      appBar: AppBar(title: const Text('Welcome')),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.line_axis_sharp), label: 'Vision board'),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
+      drawer: NavigationDrawer(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        children: const [
+          NavigationDrawerDestination(
+            icon: Icon(Icons.audiotrack),
+            label: Text('Audio'),
+          ),
+          NavigationDrawerDestination(
+            icon: Icon(Icons.message),
+            label: Text('Messages'),
+          ),
+          NavigationDrawerDestination(
+            icon: Icon(Icons.line_axis_sharp),
+            label: Text('Vision board'),
+          ),
+        ],
+      ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Khi logout, quay lại màn hình Login
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
-          },
-          child: Text('Logout'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+              child: const Text('Logout'),
+            ),
+          ],
         ),
       ),
     );
