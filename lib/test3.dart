@@ -14,7 +14,7 @@ class VocabularyApp extends StatelessWidget {
       title: 'Kiểm Tra Từ Vựng Tiếng Anh',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2196F3), // Đổi sang màu xanh dương
+          seedColor: const Color(0xFF1976D2), // Màu chính xanh dương
           brightness: Brightness.light,
         ),
         useMaterial3: true,
@@ -23,6 +23,7 @@ class VocabularyApp extends StatelessWidget {
     );
   }
 }
+
 
 class VocabularyItem {
   final String id;
@@ -95,10 +96,8 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(
-          'Xác nhận nộp bài',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Xác nhận nộp bài',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         content: Text(
           hasUnanswered
               ? 'Bạn vẫn còn câu hỏi chưa trả lời. Bạn có chắc chắn muốn nộp bài?'
@@ -118,9 +117,8 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
             child: const Text(
               'Nộp bài',
               style: TextStyle(
-                color: Color.fromARGB(255, 22, 73, 114),
-                fontWeight: FontWeight.bold,
-              ),
+                  color: Color(0xFF1565C0),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -151,42 +149,61 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
     final isLastQuestion = _currentIndex == _vocabularyItems.length - 1;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 241, 210, 236), // Màu nền xanh nhạt
+      backgroundColor: const Color.fromARGB(255, 225, 238, 245), // Màu nền xanh nhạt
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Stack(
+          alignment: Alignment.center,
           children: [
-            const Text(
-              'Luyện tập',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w800,
-                color: Colors.white,
-                letterSpacing: 1.2,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${_currentIndex + 1}/${_vocabularyItems.length}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromARGB(255, 229, 227, 227),
+                ),
               ),
             ),
-            Text(
-              'Số câu: ${_currentIndex + 1}/${_vocabularyItems.length}',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white70,
+            const Center(
+              child: Text(
+                'Luyện tập',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
         ),
-        backgroundColor: const Color.fromARGB(255, 168, 47, 190), // Màu xanh dương
-        elevation: 4,
-        iconTheme: const IconThemeData(color: Colors.white),
-        toolbarHeight: 80,
+        backgroundColor: const Color.fromARGB(255, 113, 40, 176), // Màu xanh dương đậm
+        elevation: 3,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton(
+              onPressed: _submitAnswer,
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 135, 90, 211), // Màu xanh dương
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: const Text('Nộp bài', style: TextStyle(fontSize: 14)),
+          ),
+      )],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         child: Column(
           children: [
             _buildQuestionCard(item),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             Expanded(child: _buildOptionsGrid(item)),
+            const SizedBox(height: 16),
             _buildNavigationButtons(isLastQuestion),
           ],
         ),
@@ -211,17 +228,16 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
               style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 48, 140, 216), // Màu xanh dương
+                color: Colors.black87,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               item.pronunciation,
               style: const TextStyle(
-                fontSize: 18,
-                fontStyle: FontStyle.italic,
-                color: Colors.grey,
-              ),
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  color: Color.fromARGB(255, 145, 145, 145)),
             ),
           ],
         ),
@@ -234,26 +250,35 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            item.imageUrl!,
-            height: 200,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Container(
-                height: 150,
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 150,
-                alignment: Alignment.center,
-                child: const Icon(Icons.broken_image, size: 50),
-              );
-            },
+          child: Stack(
+            children: [
+              Image.network(
+                item.imageUrl!,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    height: 150,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 150,
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.broken_image, size: 50),
+                  );
+                },
+              ),
+              Container(
+                height: 200,
+                width: double.infinity,
+                color: Colors.black.withOpacity(0.2),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 10),
@@ -276,12 +301,12 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
           child: Card(
             elevation: isSelected ? 4 : 2,
             margin: const EdgeInsets.all(4),
-            color: isSelected ? const Color(0xFFBBDEFB) : Colors.white,
+            color: isSelected ? const Color(0xFFE1F5FE) : Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
                 color: isSelected
-                    ? const Color(0xFF2196F3)
+                    ? const Color(0xFF1565C0)
                     : Colors.grey.withOpacity(0.3),
                 width: isSelected ? 2 : 1,
               ),
@@ -295,10 +320,12 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
                     height: 30,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFF2196F3) : Colors.white,
+                      color:
+                          isSelected ? const Color(0xFF1565C0) : Colors.white,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: isSelected ? const Color(0xFF2196F3) : Colors.grey,
+                        color:
+                            isSelected ? const Color(0xFF1565C0) : Colors.grey,
                       ),
                     ),
                     child: Text(
@@ -318,7 +345,8 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
                         fontSize: 16,
                         fontWeight:
                             isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected ? const Color(0xFF2196F3) : Colors.black,
+                        color:
+                            isSelected ? const Color(0xFF1565C0) : Colors.black,
                       ),
                     ),
                   ),
@@ -332,42 +360,36 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
   }
 
   Widget _buildNavigationButtons(bool isLastQuestion) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ElevatedButton(
-            onPressed: _currentIndex == 0 ? null : _previousQuestion,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              backgroundColor: _currentIndex == 0
-                  ? Colors.grey[300]
-                  : const Color.fromARGB(255, 30, 137, 225),
-              foregroundColor: Colors.white,
-            ),
-            child: const Text('Câu trước', style: TextStyle(fontSize: 16)),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          onPressed: _currentIndex == 0 ? null : _previousQuestion,
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: _currentIndex == 0
+                ? Colors.grey[300]
+                : const Color(0xFF1565C0),
+            foregroundColor: Colors.white,
           ),
-          ElevatedButton(
-            onPressed: () => isLastQuestion ? _submitAnswer() : _nextQuestion(),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              backgroundColor: const Color.fromARGB(255, 30, 137, 225),
-              foregroundColor: Colors.white,
-            ),
-            child: Text(
-              isLastQuestion ? 'Nộp bài' : 'Câu tiếp',
-              style: const TextStyle(fontSize: 16),
-            ),
+          child: const Text('Câu trước', style: TextStyle(fontSize: 16)),
+        ),
+        ElevatedButton(
+          onPressed: isLastQuestion ? null : _nextQuestion,
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: isLastQuestion
+                ? Colors.grey[300]
+                : const Color(0xFF1565C0),
+            foregroundColor: Colors.white,
           ),
-        ],
-      ),
+          child: const Text('Câu tiếp', style: TextStyle(fontSize: 16)),
+        ),
+      ],
     );
   }
 
@@ -385,7 +407,7 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kết quả kiểm tra'),
-        backgroundColor: const Color(0xFF2196F3),
+        backgroundColor: const Color(0xFF1565C0),
       ),
       body: Center(
         child: Padding(
@@ -396,10 +418,9 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
               Text(
                 'Bạn trả lời đúng $correctCount/${_vocabularyItems.length} câu!',
                 style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2196F3),
-                ),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1565C0)),
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -414,16 +435,13 @@ class _VocabularyTestScreenState extends State<VocabularyTestScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: const Color(0xFF2196F3),
+                    backgroundColor: const Color(0xFF1565C0),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  child: const Text(
-                    'Làm lại bài kiểm tra',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  child: const Text('Làm lại bài kiểm tra',
+                      style: TextStyle(fontSize: 16)),
                 ),
               ),
             ],
