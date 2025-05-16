@@ -27,7 +27,7 @@ class QuizScreen extends StatelessWidget {
         future: loadQuestions(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return MyQuizPageview(questions: snapshot.data!);
+            // return MyQuizPageview(questions: snapshot.data!);
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }

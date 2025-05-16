@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/exercise/adding%20state/quiz_with_data.dart';
+import 'package:flutter_application/samples/supabase_functions/model/question.dart';
 
 class MySingleChoiceQuiz extends StatefulWidget {
   final Question question;
@@ -17,12 +17,12 @@ class _MySingleChoiceQuizState extends State<MySingleChoiceQuiz> {
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
         Text(
-          widget.question.text,
+          widget.question.content,
           style: const TextStyle(fontSize: 25),
         ),
-        ...List.generate(widget.question.answers.length, (index) {
+        ...List.generate(widget.question.options.length, (index) {
           return RadioListTile<int>(
-            title: Text(widget.question.answers[index].text),
+            title: Text(widget.question.options[index].content),
             value: index,
             groupValue: _selectedAnswerIndex,
             onChanged: (value) {

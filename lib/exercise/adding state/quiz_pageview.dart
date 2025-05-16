@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/exercise/adding%20state/quiz_with_data.dart';
 import 'package:flutter_application/exercise/adding%20state/single_choice.dart';
+import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
 
 class MyQuizPageview extends StatefulWidget {
-  final List<Question> questions;
-  const MyQuizPageview({super.key, required this.questions});
+  final ExamDetail examDetail;
+  const MyQuizPageview({super.key, required this.examDetail});
 
   @override
   State<MyQuizPageview> createState() => _MyQuizPageviewState();
@@ -18,7 +19,7 @@ class _MyQuizPageviewState extends State<MyQuizPageview>
   void initState() {
     super.initState();
     _tabController =
-        TabController(length: widget.questions.length, vsync: this);
+        TabController(length: widget.examDetail.questions.length, vsync: this);
   }
 
   @override
@@ -43,21 +44,10 @@ class _MyQuizPageviewState extends State<MyQuizPageview>
             onPageChanged: (index) {
               _tabController.animateTo(index);
             },
-            children: widget.questions
+            children: widget.examDetail.questions
                 .map((question) => MySingleChoiceQuiz(question: question))
                 .toList(),
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TabPageSelector(
-              controller: _tabController,
-              color: Colors.blue,
-              selectedColor: Colors.yellow,
-              borderStyle: BorderStyle.none,
-            ),
-          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,8 +1,12 @@
 import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
+import 'package:flutter_application/samples/supabase_functions/model/exam_result_summary.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_summary.dart';
+import 'package:flutter_application/samples/supabase_functions/model/leaderboard_entry.dart';
 import 'package:flutter_application/samples/supabase_functions/model/option.dart';
 import 'package:flutter_application/samples/supabase_functions/model/question.dart';
+import 'package:flutter_application/samples/supabase_functions/model/question_result.dart';
 import 'package:flutter_application/samples/supabase_functions/model/subject.dart';
+import 'package:flutter_application/samples/supabase_functions/model/submitted_answer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Interface for quiz services
@@ -10,8 +14,13 @@ abstract class IQuizDataService {
   Future<List<Subject>> getSubjects();
   Future<List<ExamSummary>> getExams(int subjectId);
   Future<ExamDetail> getExamDetail(int examId);
-  Future<List<ExamSummary>> getExamsHistory();
+  Future<List<LeaderBoardEntry>> getLeaderBoard();
+  Future<List<ExamResultSummary>> getExamHistory();
+  Future<ExamDetail> getExamHistoryDetail(int examAttemptId);
+  Future<(int score, List<QuestionResult> results)> submitExam(
+      int examId, List<SubmittedAnswer> answers);
 }
+
 // =============================
 // 2. Direct query-based implementation
 // =============================
@@ -29,6 +38,13 @@ class QuizQueryService implements IQuizDataService {
       final sid = exam['subject_id'] as int;
       examCountMap[sid] = (examCountMap[sid] ?? 0) + 1;
     }
+    // test
+
+    final response = await getLeaderBoard();
+    response.forEach((element) {
+      print('User: ${element.user}, Score: ${element.score}');
+    });
+    //
 
     return res
         .map<Subject>((s) => Subject(
@@ -112,5 +128,107 @@ class QuizQueryService implements IQuizDataService {
       attemptCount: exam['attempt_count'] ?? 0,
       questions: questions,
     );
+  }
+
+  @override
+  Future<List<LeaderBoardEntry>> getLeaderBoard() async {
+    final result = await client.rpc('top_user_scores_with_name').select();
+
+    return (result as List)
+        .map<LeaderBoardEntry>((r) => LeaderBoardEntry(
+              user: r['name'] ?? r['user_id'].toString(),
+              score: r['total_score'] ?? 0,
+            ))
+        .toList();
+  }
+
+  @override
+  Future<List<ExamResultSummary>> getExamHistory() async {
+    final user = client.auth.currentUser;
+    if (user == null) throw Exception('User not logged in');
+
+    final rows = await client
+        .from('exam_attempts')
+        .select('id, exam_id, score, exams (title)')
+        .eq('user_id', user.id)
+        .order('id', ascending: false)
+        .limit(10);
+
+    return rows
+        .map<ExamResultSummary>((r) => ExamResultSummary(
+              id: r['id'],
+              title: r['exams']['title'],
+              score: r['score'] ?? 0,
+            ))
+        .toList();
+  }
+
+  @override
+  Future<ExamDetail> getExamHistoryDetail(int examAttemptId) async {
+    final attempt = await client
+        .from('exam_attempts')
+        .select('exam_id')
+        .eq('id', examAttemptId)
+        .single();
+
+    final examId = attempt['exam_id'];
+    return getExamDetail(examId);
+  }
+
+  @override
+  Future<(int score, List<QuestionResult> results)> submitExam(
+      int examId, List<SubmittedAnswer> answers) async {
+    final user = client.auth.currentUser;
+    if (user == null) throw Exception('User not logged in');
+
+    final questionIds = answers.map((a) => a.questionId).toList();
+
+    final corrects = await client
+        .from('questions')
+        .select('id, correct_option_id')
+        .inFilter('id', questionIds);
+
+    final correctMap = {
+      for (var q in corrects) q['id']: q['correct_option_id']
+    };
+
+    int score = 0;
+    final resultList = <QuestionResult>[];
+
+    for (final a in answers) {
+      final correct = correctMap[a.questionId];
+      final isCorrect = a.selectedOptionId == correct;
+      if (isCorrect) score++;
+      resultList.add(QuestionResult(
+        questionId: a.questionId,
+        isCorrect: isCorrect,
+        selectedOptionId: a.selectedOptionId,
+        correctOptionId: correct,
+      ));
+    }
+
+    final attemptInsert = await client
+        .from('exam_attempts')
+        .insert({
+          'user_id': user.id,
+          'exam_id': examId,
+          'score': score,
+        })
+        .select()
+        .single();
+
+    final attemptId = attemptInsert['id'];
+
+    await client.from('answers').insert([
+      for (final r in resultList)
+        {
+          'attempt_id': attemptId,
+          'question_id': r.questionId,
+          'selected_option_id': r.selectedOptionId,
+          'is_correct': r.isCorrect,
+        }
+    ]);
+
+    return (score, resultList);
   }
 }

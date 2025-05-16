@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/exercise/adding%20state/quiz_pageview_from_supabase.dart';
+import 'package:flutter_application/exercise/adding%20state/quiz_pageview_fromjson.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_summary.dart';
 import 'package:flutter_application/samples/supabase_functions/model/question.dart';
@@ -78,8 +80,10 @@ class ExamListScreen extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) =>
-                        ExamDetailScreen(examId: exam.id, title: exam.title),
+                    builder: (_) => QuizTakePage(
+                      examId: exam.id,
+                      dataService: dataService,
+                    ),
                   ),
                 ),
               );
