@@ -14,4 +14,14 @@ class ExamDetail {
     required this.attemptCount,
     required this.questions,
   });
+
+  factory ExamDetail.fromJson(Map<String, dynamic> json) => ExamDetail(
+        id: json['id'],
+        title: json['title'],
+        duration: json['duration'],
+        attemptCount: json['attemptCount'],
+        questions: (json['questions'] as List)
+            .map((e) => Question.fromJson(e))
+            .toList(),
+      );
 }

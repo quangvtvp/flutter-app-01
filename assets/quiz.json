@@ -1,222 +1,123 @@
-[
-  {
-    "text": "What is the capital of Japan?",
-    "answers": [
-      {
-        "text": "Seoul",
-        "isCorrect": false
-      },
-      {
-        "text": "Beijing",
-        "isCorrect": false
-      },
-      {
-        "text": "Tokyo",
-        "isCorrect": true
-      },
-      {
-        "text": "Bangkok",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "Which animal is known as the 'King of the Jungle'?",
-    "answers": [
-      {
-        "text": "Tiger",
-        "isCorrect": false
-      },
-      {
-        "text": "Elephant",
-        "isCorrect": false
-      },
-      {
-        "text": "Lion",
-        "isCorrect": true
-      },
-      {
-        "text": "Giraffe",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "What is the largest planet in our solar system?",
-    "answers": [
-      {
-        "text": "Earth",
-        "isCorrect": false
-      },
-      {
-        "text": "Mars",
-        "isCorrect": false
-      },
-      {
-        "text": "Jupiter",
-        "isCorrect": true
-      },
-      {
-        "text": "Saturn",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "Who painted the Mona Lisa?",
-    "answers": [
-      {
-        "text": "Vincent van Gogh",
-        "isCorrect": false
-      },
-      {
-        "text": "Pablo Picasso",
-        "isCorrect": false
-      },
-      {
-        "text": "Leonardo da Vinci",
-        "isCorrect": true
-      },
-      {
-        "text": "Michelangelo",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "What is the chemical symbol for water?",
-    "answers": [
-      {
-        "text": "CO2",
-        "isCorrect": false
-      },
-      {
-        "text": "O2",
-        "isCorrect": false
-      },
-      {
-        "text": "H2O",
-        "isCorrect": true
-      },
-      {
-        "text": "N2",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "Which continent is known as the 'Land Down Under'?",
-    "answers": [
-      {
-        "text": "Africa",
-        "isCorrect": false
-      },
-      {
-        "text": "Europe",
-        "isCorrect": false
-      },
-      {
-        "text": "Australia",
-        "isCorrect": true
-      },
-      {
-        "text": "South America",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "What is the fastest land animal?",
-    "answers": [
-      {
-        "text": "Lion",
-        "isCorrect": false
-      },
-      {
-        "text": "Horse",
-        "isCorrect": false
-      },
-      {
-        "text": "Cheetah",
-        "isCorrect": true
-      },
-      {
-        "text": "Deer",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "Which country is home to the Eiffel Tower?",
-    "answers": [
-      {
-        "text": "Italy",
-        "isCorrect": false
-      },
-      {
-        "text": "Spain",
-        "isCorrect": false
-      },
-      {
-        "text": "France",
-        "isCorrect": true
-      },
-      {
-        "text": "Germany",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "What is the largest desert in the world?",
-    "answers": [
-      {
-        "text": "Sahara Desert",
-        "isCorrect": false
-      },
-      {
-        "text": "Arabian Desert",
-        "isCorrect": false
-      },
-      {
-        "text": "Antarctic Polar Desert",
-        "isCorrect": true
-      },
-      {
-        "text": "Gobi Desert",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  },
-  {
-    "text": "Who invented the light bulb?",
-    "answers": [
-      {
-        "text": "Nikola Tesla",
-        "isCorrect": false
-      },
-      {
-        "text": "Alexander Graham Bell",
-        "isCorrect": false
-      },
-      {
-        "text": "Thomas Edison",
-        "isCorrect": true
-      },
-      {
-        "text": "Albert Einstein",
-        "isCorrect": false
-      }
-    ],
-    "type": "single"
-  }
-]
+{
+  "id": 1,
+  "title": "English Grammar Practice - Present Tense",
+  "duration": 20,
+  "attemptCount": 0,
+  "questions": [
+    {
+      "id": 101,
+      "content": "She ___ to school every day.",
+      "correctOptionId": 1002,
+      "options": [
+        {
+          "id": 1001,
+          "content": "go"
+        },
+        {
+          "id": 1002,
+          "content": "goes"
+        },
+        {
+          "id": 1003,
+          "content": "going"
+        },
+        {
+          "id": 1004,
+          "content": "gone"
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "content": "They ___ playing football now.",
+      "correctOptionId": 1007,
+      "options": [
+        {
+          "id": 1005,
+          "content": "is"
+        },
+        {
+          "id": 1006,
+          "content": "was"
+        },
+        {
+          "id": 1007,
+          "content": "are"
+        },
+        {
+          "id": 1008,
+          "content": "am"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "content": "I usually ___ up at 6 AM.",
+      "correctOptionId": 1011,
+      "options": [
+        {
+          "id": 1009,
+          "content": "wakes"
+        },
+        {
+          "id": 1010,
+          "content": "waking"
+        },
+        {
+          "id": 1011,
+          "content": "wake"
+        },
+        {
+          "id": 1012,
+          "content": "woke"
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "content": "Choose the synonym of 'happy'.",
+      "correctOptionId": 1015,
+      "options": [
+        {
+          "id": 1013,
+          "content": "sad"
+        },
+        {
+          "id": 1014,
+          "content": "angry"
+        },
+        {
+          "id": 1015,
+          "content": "joyful"
+        },
+        {
+          "id": 1016,
+          "content": "bored"
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "content": "Which one is a noun?",
+      "correctOptionId": 1018,
+      "options": [
+        {
+          "id": 1017,
+          "content": "run"
+        },
+        {
+          "id": 1018,
+          "content": "apple"
+        },
+        {
+          "id": 1019,
+          "content": "quickly"
+        },
+        {
+          "id": 1020,
+          "content": "blue"
+        }
+      ]
+    }
+  ]
+}
