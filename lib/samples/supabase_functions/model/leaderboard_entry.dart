@@ -3,4 +3,7 @@ class LeaderBoardEntry {
   final int score;
 
   LeaderBoardEntry({required this.user, required this.score});
+
+  @override
+  String toString() => 'LeaderBoardEntry(user: $user, score: $score)';
 }

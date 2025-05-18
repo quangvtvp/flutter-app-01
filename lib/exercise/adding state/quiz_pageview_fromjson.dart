@@ -33,7 +33,7 @@ class _QuizTakePageState extends State<QuizTakePage>
   void initState() {
     super.initState();
     _pageController = PageController();
-    _examFuture = readExamFromJson(widget.examId);
+    _examFuture = QuizQueryService().getExamDetail(widget.examId);
   }
 
   Future<ExamDetail> readExamFromJson(int examId) async {

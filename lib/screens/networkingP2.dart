@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/samples/supabase_functions/screens.dart';
+import 'package:flutter_application/screens/stats.dart';
 import 'package:flutter_application/screens/welcome.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -180,7 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Future.delayed(Duration(milliseconds: 600), () {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => SubjectListScreen(),
+                                  // builder: (context) => SubjectListScreen(),
+                                  builder: (context) => StatsWidget(),
                                 ),
                               );
                             });

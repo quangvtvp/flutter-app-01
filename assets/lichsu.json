@@ -1,0 +1,57 @@
+{
+  "subject": "Lịch Sử",
+  "title": "Kiểm tra lịch sử 2",
+  "duration_minutes": 20,
+  "questions": [
+    {
+      "content": "Cách mạng tháng Tám năm 1945 ở Việt Nam diễn ra vào thời điểm nào?",
+      "correct_answer": "Tháng 8 năm 1945",
+      "options": [
+        "Tháng 6 năm 1945",
+        "Tháng 8 năm 1945",
+        "Tháng 9 năm 1945",
+        "Tháng 12 năm 1945"
+      ]
+    },
+    {
+      "content": "Sự kiện nào đánh dấu thắng lợi của cuộc kháng chiến chống Pháp 1946–1954?",
+      "correct_answer": "Chiến thắng Điện Biên Phủ",
+      "options": [
+        "Chiến thắng Việt Bắc",
+        "Chiến thắng Điện Biên Phủ",
+        "Chiến thắng Biên giới Thu - Đông 1950",
+        "Hiệp định Sơ bộ 6/3/1946"
+      ]
+    },
+    {
+      "content": "Hiệp định Giơ-ne-vơ về Đông Dương được ký kết vào năm nào?",
+      "correct_answer": "1954",
+      "options": [
+        "1950",
+        "1954",
+        "1946",
+        "1949"
+      ]
+    },
+    {
+      "content": "Ai là Chủ tịch nước Việt Nam Dân chủ Cộng hòa đầu tiên?",
+      "correct_answer": "Hồ Chí Minh",
+      "options": [
+        "Trường Chinh",
+        "Hồ Chí Minh",
+        "Võ Nguyên Giáp",
+        "Phạm Văn Đồng"
+      ]
+    },
+    {
+      "content": "Phong trào Đồng Khởi diễn ra vào năm nào?",
+      "correct_answer": "1960",
+      "options": [
+        "1954",
+        "1960",
+        "1968",
+        "1975"
+      ]
+    }
+  ]
+}

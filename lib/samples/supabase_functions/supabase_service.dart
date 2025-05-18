@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_result_summary.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_summary.dart';
@@ -5,9 +8,11 @@ import 'package:flutter_application/samples/supabase_functions/model/leaderboard
 import 'package:flutter_application/samples/supabase_functions/model/option.dart';
 import 'package:flutter_application/samples/supabase_functions/model/question.dart';
 import 'package:flutter_application/samples/supabase_functions/model/question_result.dart';
+import 'package:flutter_application/samples/supabase_functions/model/stats.dart';
 import 'package:flutter_application/samples/supabase_functions/model/subject.dart';
 import 'package:flutter_application/samples/supabase_functions/model/submitted_answer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/intl.dart';
 
 // Interface for quiz services
 abstract class IQuizDataService {
@@ -19,6 +24,7 @@ abstract class IQuizDataService {
   Future<ExamDetail> getExamHistoryDetail(int examAttemptId);
   Future<(int score, List<QuestionResult> results)> submitExam(
       int examId, List<SubmittedAnswer> answers);
+  Future<StatsInfo> getStatsInfo();
 }
 
 // =============================
@@ -38,13 +44,6 @@ class QuizQueryService implements IQuizDataService {
       final sid = exam['subject_id'] as int;
       examCountMap[sid] = (examCountMap[sid] ?? 0) + 1;
     }
-    // test
-
-    final response = await getLeaderBoard();
-    response.forEach((element) {
-      print('User: ${element.user}, Score: ${element.score}');
-    });
-    //
 
     return res
         .map<Subject>((s) => Subject(
@@ -230,5 +229,167 @@ class QuizQueryService implements IQuizDataService {
     ]);
 
     return (score, resultList);
+  }
+
+  Future<StatsInfo> getStatsInfo() async {
+    final user = client.auth.currentUser;
+    if (user == null) throw Exception('User not logged in');
+
+    // 1. average score by subject
+    final List<dynamic> subjectAvgQuery = await client
+        .from('exam_attempts')
+        .select('score, exams (subject_id, subjects (name))')
+        .eq('user_id', user.id);
+
+    final Map<String, List<int>> subjectScores = {};
+    for (final Map<String, dynamic> row in subjectAvgQuery) {
+      final int score = row['score'] ?? 0;
+      final String subjectName = row['exams']['subjects']['name'];
+      subjectScores.putIfAbsent(subjectName, () => []).add(score);
+    }
+
+    final List<SubjectAverage> subjectAverages = subjectScores.entries
+        .map((e) => SubjectAverage(
+              subject: e.key,
+              avgScore:
+                  e.value.reduce((a, b) => a + b) / e.value.length.toDouble(),
+            ))
+        .toList();
+
+    // 2. correct / wrong ratio
+    final List<dynamic> attemptIds =
+        await client.from('exam_attempts').select('id').eq('user_id', user.id);
+
+    final List<int> attemptIdList =
+        attemptIds.map<int>((e) => e['id'] as int).toList();
+
+    final List<dynamic> answerRows = await client
+        .from('answers')
+        .select('is_correct')
+        .inFilter('attempt_id', attemptIdList);
+
+    final int total = answerRows.length;
+    final int correct = answerRows.where((a) => a['is_correct'] == true).length;
+    final int wrong = total - correct;
+    final AnswerRatio answerRatio = AnswerRatio(
+      total: total,
+      correct: correct,
+      wrong: wrong,
+      correctRate: total == 0 ? 0 : correct / total,
+    );
+
+    // 3. total score per week (past 6 weeks)
+    final DateTime now = DateTime.now();
+    final DateTime start = now.subtract(const Duration(days: 7 * 6));
+
+    final List<dynamic> weeklyRaw = await client
+        .from('exam_attempts')
+        .select('score, created_at')
+        .gte('created_at', start.toIso8601String())
+        .eq('user_id', user.id);
+
+    final Map<String, int> weekMap = <String, int>{};
+    for (int i = 0; i < 6; i++) {
+      final DateTime monday =
+          now.subtract(Duration(days: now.weekday - 1 + 7 * i));
+      final String label = DateFormat('MMM d').format(monday);
+      weekMap[label] = 0;
+    }
+
+    for (final Map<String, dynamic> row in weeklyRaw) {
+      final int score = row['score'] ?? 0;
+      final DateTime date = DateTime.parse(row['created_at']);
+      final DateTime weekStart =
+          date.subtract(Duration(days: date.weekday - 1));
+      final String label = DateFormat('MMM d').format(weekStart);
+      if (weekMap.containsKey(label)) {
+        weekMap[label] = (weekMap[label] ?? 0) + score;
+      }
+    }
+
+    final List<WeeklyTotalScore> weeklyScores = weekMap.entries
+        .map((e) => WeeklyTotalScore(weekLabel: e.key, totalScore: e.value))
+        .toList();
+
+    return StatsInfo(
+      subjectAverages: subjectAverages,
+      answerRatio: answerRatio,
+      weeklyScores: weeklyScores,
+    );
+  }
+
+  Future<void> insertQuizFromJson(String assetPath) async {
+    final String jsonString = await rootBundle.loadString(assetPath);
+    final Map<String, dynamic> quiz =
+        json.decode(jsonString) as Map<String, dynamic>;
+
+    final String subjectName = quiz['subject'] as String;
+    final String examTitle = quiz['title'] as String;
+    final int duration = quiz['duration_minutes'] as int;
+    final List<dynamic> questions = quiz['questions'] as List<dynamic>;
+
+    final Map<String, dynamic>? subjectRes = await client
+        .from('subjects')
+        .select()
+        .eq('name', subjectName)
+        .maybeSingle();
+
+    final int subjectId = subjectRes != null
+        ? subjectRes['id'] as int
+        : (await client
+            .from('subjects')
+            .insert({'name': subjectName})
+            .select()
+            .single())['id'] as int;
+
+    final Map<String, dynamic> examInsert = await client
+        .from('exams')
+        .insert({
+          'title': examTitle,
+          'duration_minutes': duration,
+          'attempt_count': 0,
+          'subject_id': subjectId,
+        })
+        .select()
+        .single();
+    final int examId = examInsert['id'] as int;
+
+    for (final Map<String, dynamic> question
+        in questions.cast<Map<String, dynamic>>()) {
+      final String questionContent = question['content'] as String;
+      final String correctAnswer = question['correct_answer'] as String;
+      final List<String> options = question['options'] as List<String>;
+
+      final Map<String, dynamic> insertedQuestion = await client
+          .from('questions')
+          .insert({'content': questionContent})
+          .select()
+          .single();
+      final int questionId = insertedQuestion['id'] as int;
+
+      final List<Map<String, dynamic>> optionRecords = options
+          .cast<String>()
+          .map((String content) => {
+                'question_id': questionId,
+                'content': content,
+              })
+          .toList();
+
+      final List<dynamic> insertedOptions =
+          await client.from('options').insert(optionRecords).select();
+
+      final Map<String, dynamic> correctOption = insertedOptions
+          .cast<Map<String, dynamic>>()
+          .firstWhere((opt) => opt['content'] == correctAnswer);
+
+      await client.from('questions').update({
+        'correct_option_id': correctOption['id'] as int,
+      }).eq('id', questionId);
+
+      await client.from('exam_questions').insert({
+        'exam_id': examId,
+        'question_id': questionId,
+      });
+    }
   }
 }
