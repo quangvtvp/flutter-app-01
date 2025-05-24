@@ -7,14 +7,14 @@ import 'dart:convert';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<void> main() async {
-  await Supabase.initialize(
-    url: 'https://sbcbalojhzxxvsmiainj.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiY2JhbG9qaHp4eHZzbWlhaW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1ODc1NzYsImV4cCI6MjA2MDE2MzU3Nn0.wtbHv7jlXhTIxfLQJ5JQFP1r3m5u_-13Cik87BMKL9Y',
-  );
-  runApp(MaterialApp(home: LoginScreen()));
-}
+// Future<void> main() async {
+//   await Supabase.initialize(
+//     url: 'https://dbhwiwngltxrbuasrilt.supabase.co',
+//     anonKey:
+//         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiaHdpd25nbHR4cmJ1YXNyaWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3NTc2MzgsImV4cCI6MjA2MTMzMzYzOH0.OSwLzj3L2u4r9_WiFDFimLUdNw3RImF0jlkMCvgAUPw',
+//   );
+//   runApp(MaterialApp(home: LoginScreen()));
+// }
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/samples/supabase_functions/model/exam_detail.dart';
 import 'package:flutter_application/samples/supabase_functions/model/submitted_answer.dart';
@@ -23,17 +24,43 @@ class QuizTakePage extends StatefulWidget {
 }
 
 class _QuizTakePageState extends State<QuizTakePage>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late PageController _pageController;
   List<int>? _selectedAnswers;
   late Future<ExamDetail> _examFuture;
   ExamDetail? _examDetail;
+  late Ticker _ticker;
+  int _remainingSeconds = 0;
+  bool _quizSubmitted = false;
+  late DateTime _endTime;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
-    _examFuture = QuizQueryService().getExamDetail(widget.examId);
+    // _examFuture = QuizQueryService().getExamDetail(widget.examId);
+    _examFuture = readExamFromJson(widget.examId);
+    _ticker = Ticker((_) {
+      final now = DateTime.now();
+      final diff = _endTime.difference(now).inSeconds;
+
+      if (diff > 0 && !_quizSubmitted) {
+        setState(() {
+          _remainingSeconds = diff;
+        });
+      } else if (!_quizSubmitted) {
+        _quizSubmitted = true;
+        _ticker.stop();
+        _submitQuiz();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _ticker?.dispose();
+    super.dispose();
   }
 
   Future<ExamDetail> readExamFromJson(int examId) async {
@@ -102,10 +129,25 @@ class _QuizTakePageState extends State<QuizTakePage>
         _selectedAnswers ??=
             List<int>.filled(_examDetail!.questions.length, -1);
 
+        if (!_ticker.isActive && _remainingSeconds == 0) {
+          final duration = Duration(minutes: _examDetail!.duration);
+          _endTime = DateTime.now().add(duration);
+          _remainingSeconds = duration.inSeconds;
+          _ticker.start();
+        }
+
         return Scaffold(
           appBar: AppBar(title: Text(_examDetail!.title)),
           body: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '⏳ Còn lại: ${(_remainingSeconds ~/ 60).toString().padLeft(2, '0')}:${(_remainingSeconds % 60).toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application/screens/networkingP2.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StatsWidget extends StatefulWidget {
@@ -77,6 +79,19 @@ class _MyWidgetState extends State<StatsWidget> {
                   ),
                 )
               ],
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Supabase.instance.client.auth.signOut().then((value) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                });
+              },
+              child: Text("Logout"),
             ),
           ],
         ),
